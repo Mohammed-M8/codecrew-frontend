@@ -24,8 +24,6 @@ const SignInForm = () => {
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     try {
-      // This function doesn't exist yet, but we'll create it soon.
-      // It will cause an error right now
       const signedInUser = await signIn(formData);
 
       setUser(signedInUser);
@@ -35,40 +33,65 @@ const SignInForm = () => {
     }
   };
 
+  const isFormInvalid = () => {
+    return !(formData.username && formData.password);
+  };
+
+
   return (
-    <main>
-      <h1>Sign In</h1>
-      <p>{message}</p>
-      <form autoComplete='off' onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor='email'>Username:</label>
-          <input
-            type='text'
-            autoComplete='off'
-            id='username'
-            value={formData.username}
-            name='username'
-            onChange={handleChange}
-            required
-          />
+    <main className="container w-100 py-5">
+      <div className="row w-100 justify-content-center">
+        <div className="col-12 w-100 col-md-6 col-lg-4">
+          <div className="card w-90 shadow-sm">
+            <div className="card-body p-4">
+              <h1 className="h3 text-center mb-4">Sign In</h1>
+
+              {message && (
+                <div className="alert alert-danger py-2" role="alert">
+                  {message}
+                </div>
+              )}
+
+              <form autoComplete="off" onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <label htmlFor="username" className="form-label">Username</label>
+                  <input
+                    type="text"
+                    autoComplete="off"
+                    id="username"
+                    className="form-control"
+                    value={formData.username}
+                    name="username"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="mb-4">
+                  <label htmlFor="password" className="form-label">Password</label>
+                  <input
+                    type="password"
+                    autoComplete="off"
+                    id="password"
+                    className="form-control"
+                    value={formData.password}
+                    name="password"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="d-flex gap-2">
+                  <button disabled={isFormInvalid()} type="submit" className="btn btn-primary flex-grow-1">Sign In</button>
+                  <button type="button" className="btn btn-outline-secondary" onClick={() => navigate('/')}>
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
-        <div>
-          <label htmlFor='password'>Password:</label>
-          <input
-            type='password'
-            autoComplete='off'
-            id='password'
-            value={formData.password}
-            name='password'
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <button>Sign In</button>
-          <button onClick={() => navigate('/')}>Cancel</button>
-        </div>
-      </form>
+      </div>
     </main>
   );
 };
