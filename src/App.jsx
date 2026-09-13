@@ -10,6 +10,7 @@ import Landing from './components/Landing/Landing'
 
 // Context
 import { UserContext } from './contexts/UserContext';
+import ProjectsSearch from './components/ProjectsSearch/ProjectsSearch';
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -22,11 +23,12 @@ const App = () => {
           <>
             <Route path='/' element={<Dashboard />}>
               <Route path='projects' element={<h1>Projects</h1>} />
+              <Route path='projects/search' element={<ProjectsSearch />} />
 
 
               <Route path='requests' element={<h1>Requests</h1>} />
-              
-              
+
+
               <Route path='tasks' element={<h1>Tasks</h1>} />
             </Route>
           </> :
