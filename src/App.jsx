@@ -18,9 +18,23 @@ const App = () => {
     <>
       <NavBar />
       <Routes>
-        <Route path='/' element={user ? <Dashboard /> : <Landing/> } />
-        <Route path='/sign-up' element={<SignUpForm />} />
-        <Route path='/sign-in' element={<SignInForm />} />
+        {user ?
+          <>
+            <Route path='/' element={<Dashboard />}>
+              <Route path='projects' element={<h1>Projects</h1>} />
+
+
+              <Route path='requests' element={<h1>Requests</h1>} />
+              
+              
+              <Route path='tasks' element={<h1>Tasks</h1>} />
+            </Route>
+          </> :
+          <>
+            <Route path='/' element={<Landing />} />
+            <Route path='/sign-up' element={<SignUpForm />} />
+            <Route path='/sign-in' element={<SignInForm />} /></>
+        }
       </Routes>
     </>
   );
