@@ -31,6 +31,11 @@ const Dashboard = () => {
                   My Tasks
                 </NavLink>
               </li>
+              <li className="nav-item">
+                <NavLink className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} to="/projects/search">
+                  Search
+                </NavLink>
+              </li>
             </ul>
           </div>
         </nav>
