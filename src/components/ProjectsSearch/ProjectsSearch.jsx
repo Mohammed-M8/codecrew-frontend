@@ -16,6 +16,12 @@ export default function ProjectsSearch() {
     const totalRequired = (requiredRoles) =>
         requiredRoles.reduce((sum, r) => sum + r.quantity, 0);
 
+    const percentFilled = (p) => {
+        const required = totalRequired(p.requiredRoles);
+        if (required === 0) return 0;
+        return Math.min(100, Math.round((p.members.length / required) * 100));
+    };
+
     return (
         <main className="container py-5">
             <h1 className="mb-3">Search Projects</h1>
@@ -26,9 +32,20 @@ export default function ProjectsSearch() {
                             <div className="row align-items-center">
                                 <div className="col-8">
                                     <h5 className="card-title mb-1">{p.title}</h5>
+
                                     <p className="text-muted mb-1">
                                         {p.members.length}/{totalRequired(p.requiredRoles)} members
                                     </p>
+                                    <div className="progress mb-2" style={{ height: '6px' }} role="progressbar" aria-label="Members filled">
+                                        <div
+                                            className="progress-bar"
+                                            style={{ width: `${percentFilled(p)}%` }}
+                                            aria-valuenow={percentFilled(p)}
+                                            aria-valuemin="0"
+                                            aria-valuemax="100"
+                                        ></div>
+                                    </div>
+
                                     <p className="mb-0">
                                         <strong>Technologies:</strong> {p.technologies.join(', ')}
                                     </p>
