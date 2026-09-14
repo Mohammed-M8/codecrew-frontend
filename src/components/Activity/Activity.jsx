@@ -1,12 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import taskService from '../../services/taskService';
 import { UserContext } from "../../contexts/UserContext";
-import TaskCard from "./TaskCard/TaskCard";
+import TaskCard from "../TaskCard/TaskCard";
 
 function Activity() {
     const { user } = useContext(UserContext);
     const [tasks, setTasks] = useState([]);
-    const [isStautchanged, setIsStatusChanged] = useState(false);
 
 
     useEffect(() => {
@@ -16,16 +15,22 @@ function Activity() {
             setTasks(tasks);
         };
         if (user) fetchAlltasks();
-    }, [user, isStautchanged]);
+    }, [user]);
 
     const handleStatusChange = async (projectId, taskId) => {
         try {
             const updatedStatus = await taskService.updateStatus(projectId, taskId);
-            setTasks(tasks.map((task) => task._id === updatedStatus._id ? updatedStatus : task))
-            setIsStatusChanged(true)
+            setTasks(
+                updatedStatus.status === "completed"
+                    ? tasks.filter(
+                        (task) => task._id !== updatedStatus._id
+                    )
+                    : tasks.map((task) => task._id === updatedStatus._id ? updatedStatus : task))
         }
         catch (err) { console.log(err.message) }
     }
+
+    if (!tasks) return (<main>Loading...</main>)
 
     return (<>
 

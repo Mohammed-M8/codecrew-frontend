@@ -16,6 +16,22 @@ const activity = async (userId) => {
         console.log(err)
     }
 }
+const index = async (projectId) => {
+    try {
+        const res = await fetch(`${BASE_URL}/projects/${projectId}/tasks`,
+            {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+            }
+        );
+        if (!res.ok) {
+            throw new Error(`Failed to fetch activity: ${res.status}`);
+        }
+        return await res.json();
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
 
 const updateStatus = async (projectId, taskId) => {
     try {
@@ -32,4 +48,20 @@ const updateStatus = async (projectId, taskId) => {
         console.log(err)
     }
 }
-export default { activity, updateStatus };
+
+const show = async (projectId, taskId) => {
+    try {
+        const res = await fetch(`${BASE_URL}/projects/${projectId}/tasks/${taskId}`,
+            {
+                method: 'GET',
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+            }
+        );
+
+        return await res.json();
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+export default { activity, updateStatus, show, index };

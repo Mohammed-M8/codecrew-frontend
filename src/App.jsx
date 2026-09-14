@@ -15,6 +15,8 @@ import ProjectsSearch from './components/ProjectsSearch/ProjectsSearch';
 import MyProjects from './components/MyProjects/MyProjects';
 import ProjectDetails from './components/ProjectLayout/ProjectLayout';
 import ProjectInfo from './components/ProjectInfo/ProjectInfo';
+import TaskDetail from './components/TaskDetails/TaskDetails';
+import TaskList from './components/TaskList/TaskList';
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -31,13 +33,13 @@ const App = () => {
               <Route path='projects/search' element={<ProjectsSearch />} />
               <Route path='projects/:projectId/' element={<ProjectDetails />}>
                 <Route index element={<ProjectInfo />} />
-                <Route path='tasks' element={<h1>Tasks</h1>} />
+                <Route path='tasks' element={<><h1>Tasks</h1><TaskList /></>} />
                 <Route path='requests' element={<h1>Requests</h1>} />
               </Route>
 
 
               <Route path='requests' element={<h1>Requests</h1>} />
-
+              <Route path='projects/:projectId/tasks/:taskId' element={<TaskDetail />}></Route>
 
               <Route path='tasks' element={<><h1>Tasks</h1><Activity /></>} />
             </Route>

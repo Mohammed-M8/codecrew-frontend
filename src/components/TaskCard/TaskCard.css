@@ -36,8 +36,18 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 10px;
+    justify-content: space-between;
+    gap: 20px;
     margin-left: 25px;
+}
+
+.task-card a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.task-card a :hover {
+    text-decoration: underline;
 }
 
 .task-actions .badge {
