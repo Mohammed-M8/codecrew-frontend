@@ -19,7 +19,7 @@ export default function ProjectDetails() {
     if (!project) return <main className="container py-5">Loading...</main>;
 
     const isOwner = project.owner?._id === user._id;
-    const isMember = project.members?.some(m => m._id === user._id)
+    const isMember = project.members?.some(m => m.user._id === user._id)
 
     return (
         <main className="container py-5">
