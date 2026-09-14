@@ -10,6 +10,7 @@ import Landing from './components/Landing/Landing'
 
 // Context
 import { UserContext } from './contexts/UserContext';
+import TaskForm from './components/TaskForm/TaskForm';
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -25,9 +26,9 @@ const App = () => {
 
 
               <Route path='requests' element={<h1>Requests</h1>} />
-              
-              
-              <Route path='tasks' element={<h1>Tasks</h1>} />
+
+
+              <Route path='tasks' element={<><h1>Tasks</h1><TaskForm /></>} />
             </Route>
           </> :
           <>
