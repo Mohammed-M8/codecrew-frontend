@@ -7,6 +7,7 @@ import SignUpForm from './components/SignUpForm/SignUpForm';
 import SignInForm from './components/SignInForm/SignInForm';
 import Dashboard from './components/Dashboard/Dashboard'
 import Landing from './components/Landing/Landing'
+import JoinRequests from './components/JoinRequests/JoinRequests';
 
 // Context
 import { UserContext } from './contexts/UserContext';
@@ -37,7 +38,7 @@ const App = () => {
               </Route>
 
 
-              <Route path='requests' element={<h1>Requests</h1>} />
+              <Route path='requests' element={<JoinRequests />} />
 
 
               <Route path='tasks' element={<h1>Tasks</h1>} />

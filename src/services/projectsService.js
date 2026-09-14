@@ -22,7 +22,6 @@ const userProjects = async () => {
 
 const show = async (projectId) => {
     try {
-
         const data = await fetch(`${BASE_URL}/${projectId}`).then(res => res.json())
         return data;
     } catch (error) {
