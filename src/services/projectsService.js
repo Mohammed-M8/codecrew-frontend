@@ -9,19 +9,19 @@ const index = async () => {
     }
 }
 
-const getMyProjects = async () => {
+const userProjects = async () => {
     try {
-        const res = await fetch(`${BASE_URL}/me`, {
+        const config = {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
-        })
+        }
 
-        const data = await res.json()
+        const data = await fetch(`${BASE_URL}/me`, config).then(res => res.json())
         return data;
     } catch (error) {
         console.log(error)
     }
 }
 
-export {index, getMyProjects}
+export { index, userProjects }

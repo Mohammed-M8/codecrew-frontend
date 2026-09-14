@@ -1,10 +1,10 @@
-import { getMyProjects } from './projectsService.js';
+import { userProjects } from './projectsService.js';
 
 const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/projects`;
 
 const getJoinRequests = async () => {
   try {
-    const projects = await getMyProjects();
+    const projects = await userProjects();
     const token = localStorage.getItem('token');
 
     const allRequests = [];
