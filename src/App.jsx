@@ -8,6 +8,7 @@ import SignInForm from './components/SignInForm/SignInForm';
 import Dashboard from './components/Dashboard/Dashboard'
 import Landing from './components/Landing/Landing'
 import Activity from "./components/Activity/Activity";
+import JoinRequests from './components/JoinRequests/JoinRequests';
 
 // Context
 import { UserContext } from './contexts/UserContext';
@@ -17,6 +18,7 @@ import ProjectDetails from './components/ProjectLayout/ProjectLayout';
 import ProjectInfo from './components/ProjectInfo/ProjectInfo';
 import TaskDetail from './components/TaskDetails/TaskDetails';
 import TaskList from './components/TaskList/TaskList';
+import CreateProjectForm from './components/CreateProjectForm/CreateProjectForm';
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -31,6 +33,7 @@ const App = () => {
               <Route index element={<MyProjects />} />
               <Route path='projects' element={<MyProjects />} />
               <Route path='projects/search' element={<ProjectsSearch />} />
+              <Route path='projects/new' element={<CreateProjectForm />} />
               <Route path='projects/:projectId/' element={<ProjectDetails />}>
                 <Route index element={<ProjectInfo />} />
                 <Route path='tasks' element={<><h1>Tasks</h1><TaskList /></>} />
@@ -38,8 +41,10 @@ const App = () => {
               </Route>
 
 
-              <Route path='requests' element={<h1>Requests</h1>} />
+
               <Route path='projects/:projectId/tasks/:taskId' element={<TaskDetail />}></Route>
+
+              <Route path='requests' element={<JoinRequests />} />
 
               <Route path='tasks' element={<><h1>Tasks</h1><Activity /></>} />
             </Route>

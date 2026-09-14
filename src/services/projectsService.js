@@ -22,7 +22,6 @@ const userProjects = async () => {
 
 const show = async (projectId) => {
     try {
-
         const data = await fetch(`${BASE_URL}/${projectId}`).then(res => res.json())
         return data;
     } catch (error) {
@@ -30,4 +29,37 @@ const show = async (projectId) => {
     }
 }
 
-export { index, userProjects, show }
+const create = async (formData) => {
+    const res = await fetch(`${BASE_URL}/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(formData),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+        throw new Error(data.err || 'Something went wrong');
+    }
+
+    return data;
+};
+
+const deleteProject = async (projectId) => {
+    const res = await fetch(`${BASE_URL}/${projectId}`, {
+        method: 'DELETE',
+        ...getHeaders()
+    });
+
+    if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.err || 'Something went wrong');
+    }
+
+    return true;
+};
+
+export { index, userProjects, show, create, deleteProject }
