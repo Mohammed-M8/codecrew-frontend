@@ -1,35 +1,16 @@
-import { userProjects } from './projectsService.js';
-
 const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/projects`;
 
 const getJoinRequests = async () => {
   try {
-    const projects = await userProjects();
-    const token = localStorage.getItem('token');
+    const res = await fetch(`${BASE_URL}/join-requests`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
 
-    const allRequests = [];
+    const data = await res.json();
 
-    for (const project of projects) {
-      const res = await fetch(
-        `${BASE_URL}/${project._id}/join-requests`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      const requests = await res.json();
-
-      requests.forEach((request) => {
-        allRequests.push({
-          ...request,
-          project,
-        });
-      });
-    }
-
-    return allRequests;
+    return data;
   } catch (error) {
     console.log(error);
   }
