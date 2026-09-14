@@ -31,17 +31,22 @@ const show = async (projectId) => {
 }
 
 const create = async (formData) => {
-    try {
-        const data = await fetch(`${BASE_URL}/`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
-            body: JSON.stringify(formData),
-        }).then(res => res.json())
+    const res = await fetch(`${BASE_URL}/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(formData),
+    });
 
-        return data;
-    } catch (error) {
-        console.log(error)
+    const data = await res.json();
+
+    if (!res.ok) {
+        throw new Error(data.err || 'Something went wrong');
     }
-}
+
+    return data;
+};
 
 export { index, userProjects, show, create }
