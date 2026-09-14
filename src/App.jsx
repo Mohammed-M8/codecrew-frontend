@@ -14,6 +14,7 @@ import ProjectsSearch from './components/ProjectsSearch/ProjectsSearch';
 import MyProjects from './components/MyProjects/MyProjects';
 import ProjectDetails from './components/ProjectLayout/ProjectLayout';
 import ProjectInfo from './components/ProjectInfo/ProjectInfo';
+import CreateProjectForm from './components/CreateProjectForm/CreateProjectForm';
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -28,6 +29,7 @@ const App = () => {
               <Route index element={<MyProjects />} />
               <Route path='projects' element={<MyProjects />} />
               <Route path='projects/search' element={<ProjectsSearch />} />
+              <Route path='projects/new' element={<CreateProjectForm />} />
               <Route path='projects/:projectId/' element={<ProjectDetails />}>
                 <Route index element={<ProjectInfo />} />
                 <Route path='tasks' element={<h1>Tasks</h1>} />
