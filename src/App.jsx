@@ -7,17 +7,14 @@ import SignUpForm from './components/SignUpForm/SignUpForm';
 import SignInForm from './components/SignInForm/SignInForm';
 import Dashboard from './components/Dashboard/Dashboard'
 import Landing from './components/Landing/Landing'
+import Activity from "./components/Activity/Activity";
 
 // Context
 import { UserContext } from './contexts/UserContext';
-<<<<<<< HEAD
-import TaskForm from './components/TaskForm/TaskForm';
-=======
 import ProjectsSearch from './components/ProjectsSearch/ProjectsSearch';
 import MyProjects from './components/MyProjects/MyProjects';
 import ProjectDetails from './components/ProjectLayout/ProjectLayout';
 import ProjectInfo from './components/ProjectInfo/ProjectInfo';
->>>>>>> main
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -42,11 +39,7 @@ const App = () => {
               <Route path='requests' element={<h1>Requests</h1>} />
 
 
-<<<<<<< HEAD
-              <Route path='tasks' element={<><h1>Tasks</h1><TaskForm /></>} />
-=======
-              <Route path='tasks' element={<h1>Tasks</h1>} />
->>>>>>> main
+              <Route path='tasks' element={<><h1>Tasks</h1><Activity /></>} />
             </Route>
           </> :
           <>

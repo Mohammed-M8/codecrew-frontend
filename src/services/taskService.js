@@ -7,10 +7,13 @@ const activity = async (userId) => {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
             }
         );
-        await res.json();
+        if (!res.ok) {
+            throw new Error(`Failed to fetch activity: ${res.status}`);
+        }
+        return await res.json();
     }
     catch (err) {
         console.log(err)
     }
 }
-export { activity };
+export default { activity };

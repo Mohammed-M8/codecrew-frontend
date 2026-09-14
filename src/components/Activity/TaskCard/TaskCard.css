@@ -1,0 +1,43 @@
+.task-card {
+    position: relative;
+    width: 92%;
+    margin-bottom: 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.task-card .card-body {
+    min-height: 120px;
+    padding: 20px 22px 20px 30px;
+}
+
+.task-strip {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+}
+
+
+.task-card .flex-grow-1 {
+    min-width: 0;
+}
+
+.task-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    margin-left: 25px;
+}
+
+.task-actions .badge {
+    padding: 6px 10px;
+}
+
+.task-actions .btn {
+    width: 100px;
+    height: 42px;
+}
