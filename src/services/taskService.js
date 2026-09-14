@@ -16,4 +16,20 @@ const activity = async (userId) => {
         console.log(err)
     }
 }
-export default { activity };
+
+const updateStatus = async (projectId, taskId) => {
+    try {
+        const res = await fetch(`${BASE_URL}/projects/${projectId}/tasks/${taskId}`,
+            {
+                method: 'PATCH',
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+            }
+        );
+
+        return await res.json();
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+export default { activity, updateStatus };

@@ -1,10 +1,17 @@
 .task-card {
     position: relative;
-    width: 92%;
+    width: 90%;
     margin-bottom: 16px;
     border: 1px solid #ddd;
     border-radius: 6px;
     overflow: hidden;
+    transition: transform 0.2s ease;
+
+}
+
+.task-card:hover {
+    transform: scale(1.02);
+    cursor: pointer;
 }
 
 .task-card .card-body {
@@ -17,7 +24,7 @@
     left: 0;
     top: 0;
     bottom: 0;
-    width: 6px;
+    width: 9px;
 }
 
 
@@ -38,6 +45,7 @@
 }
 
 .task-actions .btn {
-    width: 100px;
+    min-width: 130px;
     height: 42px;
+    white-space: nowrap;
 }

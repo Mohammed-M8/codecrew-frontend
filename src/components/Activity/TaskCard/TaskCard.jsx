@@ -1,9 +1,9 @@
 import getRandomColor from "./taskColor";
 import './TaskCard.css';
 
-function TaskCard({ task }) {
+function TaskCard({ task, handleStatusChange }) {
     return (
-        <div className="card task-card">
+        <div className="card task-card shadow-sm">
             <div className="card-body d-flex align-items-center">
 
                 <div className="task-strip"
@@ -32,14 +32,24 @@ function TaskCard({ task }) {
                                     ? "#28a745"
                                     : task.status === "in-progress"
                                         ? "#ffc107"
-                                        : "#8d66d6"
+                                        : "#D65DB1"
                         }}
                     >
                         {task.status}
                     </span>
-                    <button className="btn btn-primary ms-3">
-                        Start task
-                    </button>
+                    {task.status !== "completed" &&
+                        (<button
+                            className={`btn ${task.status === "todo"
+                                ? "btn-primary"
+                                : "btn-success"
+                                }`}
+                            onClick={() => handleStatusChange(task.project._id, task._id)}
+                        >
+                            {task.status === "todo"
+                                ? 'Start Task'
+                                : 'Mark As Complete'}
+                        </button>)}
+
 
                 </div>
             </div>
