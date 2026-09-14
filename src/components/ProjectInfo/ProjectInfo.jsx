@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import * as projectService from '../../services/projectsService';
-import { useParams } from "react-router";
+import { NavLink, useParams } from "react-router";
+import { UserContext } from "../../contexts/UserContext";
 
-export default function ProjectDetails() {
-
+export default function ProjectInfo() {
+    const { user } = useContext(UserContext)
     const [project, setProject] = useState(null)
     const params = useParams()
     const projectId = params.projectId
@@ -29,12 +30,17 @@ export default function ProjectDetails() {
     if (!project) return <p className="container py-5">Loading...</p>;
 
     return (
-        <main className="container py-5">
+        <main className="container">
             <div className="d-flex justify-content-between align-items-start mb-3">
                 <div>
-                    <h1 className="mb-1">{project.title}</h1>
+                    <div className="d-flex align-items-center gap-3 mb-1">
+                        <h1 className="mb-0">{project.title}</h1>
+                        {project.owner?._id === user._id && (
+                            <NavLink className="btn btn-secondary" to="edit">Edit</NavLink>
+                        )}
+                    </div>
                     <p className="text-muted mb-0">
-                         by {project.owner?.username}
+                        Owned by {project.owner?.username}
                     </p>
                 </div>
                 <span className={`badge ${project.status === 'open' ? 'text-bg-success' : 'text-bg-secondary'}`}>
