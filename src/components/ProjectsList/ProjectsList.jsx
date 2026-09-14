@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 
-export default function ProjectsList({ projects }) {
+export default function ProjectsList({ projects,variant }) {
 
     const totalRequired = (requiredRoles) =>
         requiredRoles.reduce((sum, r) => sum + r.quantity, 0);
@@ -41,7 +41,7 @@ export default function ProjectsList({ projects }) {
                                 <Link to={`/projects/${p._id}`} className="btn btn-outline-primary">
                                     View Project
                                 </Link>
-                                <button className="btn btn-primary">Join</button>
+                                {variant==="search"&&<button className="btn btn-primary">Join</button>}
                             </div>
                         </div>
                     </div>

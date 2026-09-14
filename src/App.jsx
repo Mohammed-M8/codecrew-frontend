@@ -11,7 +11,6 @@ import Landing from './components/Landing/Landing'
 // Context
 import { UserContext } from './contexts/UserContext';
 import ProjectsSearch from './components/ProjectsSearch/ProjectsSearch';
-import ProjectsList from './components/MyProjects/MyProjects';
 import MyProjects from './components/MyProjects/MyProjects';
 
 const App = () => {
