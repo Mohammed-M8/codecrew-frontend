@@ -1,13 +1,16 @@
 import { useContext, useEffect, useState } from "react"
 import * as projectService from '../../services/projectsService';
-import { NavLink, useParams } from "react-router";
+import { NavLink, useNavigate, useParams } from "react-router";
 import { UserContext } from "../../contexts/UserContext";
+import DeleteProjectModal from "../DeleteProjectModal/DeleteProjectModal";
 
 export default function ProjectInfo() {
     const { user } = useContext(UserContext)
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [project, setProject] = useState(null)
     const params = useParams()
     const projectId = params.projectId
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getProject = async () => {
@@ -27,6 +30,15 @@ export default function ProjectInfo() {
         return Math.min(100, Math.round((p.members.length / required) * 100));
     };
 
+    const handleDelete = async () => {
+        try {
+            await projectService.deleteProject(projectId)
+            navigate('/projects')
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     if (!project) return <p className="container py-5">Loading...</p>;
 
     return (
@@ -36,7 +48,10 @@ export default function ProjectInfo() {
                     <div className="d-flex align-items-center gap-3 mb-1">
                         <h1 className="mb-0">{project.title}</h1>
                         {project.owner?._id === user._id && (
-                            <NavLink className="btn btn-secondary" to="edit">Edit</NavLink>
+                            <>
+                                <NavLink className="btn btn-secondary" to="edit">Edit</NavLink>
+                                <button className="btn btn-danger" onClick={() => setShowDeleteModal(true)}>Delete</button>
+                            </>
                         )}
                     </div>
                     <p className="text-muted mb-0">
@@ -47,6 +62,11 @@ export default function ProjectInfo() {
                     {project.status}
                 </span>
             </div>
+            <DeleteProjectModal
+                show={showDeleteModal}
+                onClose={() => setShowDeleteModal(false)}
+                handleDelete={handleDelete}
+            />
 
             <p className="mb-4">{project.description}</p>
 

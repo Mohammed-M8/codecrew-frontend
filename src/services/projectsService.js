@@ -48,4 +48,18 @@ const create = async (formData) => {
     return data;
 };
 
-export { index, userProjects, show, create }
+const deleteProject = async (projectId) => {
+    const res = await fetch(`${BASE_URL}/${projectId}`, {
+        method: 'DELETE',
+        ...getHeaders()
+    });
+
+    if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.err || 'Something went wrong');
+    }
+
+    return true;
+};
+
+export { index, userProjects, show, create, deleteProject }
