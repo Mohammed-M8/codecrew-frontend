@@ -1,14 +1,23 @@
+import { useContext } from "react";
 import { Link } from "react-router";
+import { UserContext } from "../../contexts/UserContext";
 
-export default function ProjectsList({ projects,variant }) {
-
+export default function ProjectsList({ projects, variant }) {
+    const { user } = useContext(UserContext)
     const totalRequired = (requiredRoles) =>
-        requiredRoles.reduce((sum, r) => sum + r.quantity, 0);
+        requiredRoles.reduce((sum, r) => sum + r.quantity, 0) + 1;
 
     const percentFilled = (p) => {
         const required = totalRequired(p.requiredRoles);
         if (required === 0) return 0;
         return Math.min(100, Math.round((p.members.length / required) * 100));
+    };
+
+    const isLoggedIn = !!user
+
+    const isAlreadyMember = (p) => {
+        if (!user) return false;
+        return p.members.some(m => (m.user?._id || m.user) === user._id);
     };
     return (
         <div className="d-flex flex-column gap-3">
@@ -41,7 +50,11 @@ export default function ProjectsList({ projects,variant }) {
                                 <Link to={`/projects/${p._id}`} className="btn btn-outline-primary">
                                     View Project
                                 </Link>
-                                {variant==="search"&&<button className="btn btn-primary">Join</button>}
+                                {variant === "search" && isLoggedIn && (
+                                    isAlreadyMember(p)
+                                        ? <p className="text-muted mb-0 text-center">Joined</p>
+                                        : <button className="btn btn-primary">Join</button>
+                                )}
                             </div>
                         </div>
                     </div>
