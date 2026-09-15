@@ -1,0 +1,17 @@
+.project-card {
+    position: relative;
+    transition: transform 0.2s ease;
+}
+
+.project-card:hover {
+    transform: scale(1.02);
+    cursor: pointer;
+}
+
+.project-strip {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 9px;
+}

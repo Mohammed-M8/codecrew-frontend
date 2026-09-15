@@ -1,8 +1,10 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useState, useMemo } from "react"
 import * as projectService from '../../services/projectsService';
 import { NavLink, useNavigate, useParams } from "react-router";
 import { UserContext } from "../../contexts/UserContext";
 import DeleteProjectModal from "../DeleteProjectModal/DeleteProjectModal";
+import getRandomColor from "../../../helpers/getRandomColor";
+import "./ProjectInfo.css";
 
 export default function ProjectInfo() {
     const { user } = useContext(UserContext)
@@ -20,7 +22,13 @@ export default function ProjectInfo() {
 
         getProject();
     }, [projectId])
-    
+
+    const stripColors = useMemo(() => ({
+        technologies: getRandomColor(),
+        members: getRandomColor(),
+        roles: getRandomColor(),
+    }), [projectId]);
+
 const totalRequired = (requiredRoles) =>
     requiredRoles.reduce((sum, r) => sum + r.quantity, 0) + 1;
 
@@ -72,7 +80,8 @@ const totalRequired = (requiredRoles) =>
 
             <div className="row g-4">
                 <div className="col-12 col-lg-8">
-                    <div className="card shadow-sm mb-4">
+                    <div className="card info-card shadow-sm mb-4">
+                        <div className="info-strip" style={{ backgroundColor: stripColors.technologies }} />
                         <div className="card-body">
                             <h5 className="card-title">Technologies</h5>
                             <div className="d-flex flex-wrap gap-2">
@@ -85,7 +94,8 @@ const totalRequired = (requiredRoles) =>
                         </div>
                     </div>
 
-                    <div className="card shadow-sm">
+                    <div className="card info-card shadow-sm">
+                        <div className="info-strip" style={{ backgroundColor: stripColors.members }} />
                         <div className="card-body">
                             <h5 className="card-title mb-3">Members</h5>
                             <p className="text-muted mb-1">
@@ -118,7 +128,8 @@ const totalRequired = (requiredRoles) =>
                 </div>
 
                 <div className="col-12 col-lg-4">
-                    <div className="card shadow-sm">
+                    <div className="card info-card shadow-sm">
+                        <div className="info-strip" style={{ backgroundColor: stripColors.roles }} />
                         <div className="card-body">
                             <h5 className="card-title mb-3">Roles Needed</h5>
                             {project.requiredRoles.length > 0 ? (
