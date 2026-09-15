@@ -13,6 +13,7 @@ export default function CreateProjectForm() {
         description: '',
         technologies: [],
         requiredRoles: [],
+        ownerRole: '',
     });
 
     const handleChange = (e) => {
@@ -59,7 +60,8 @@ export default function CreateProjectForm() {
             formData.title &&
             formData.description &&
             formData.technologies.length > 0 &&
-            formData.requiredRoles.length > 0
+            formData.requiredRoles.length > 0 &&
+            formData.ownerRole.trim()
         );
     };
 
@@ -88,6 +90,20 @@ export default function CreateProjectForm() {
                                         value={formData.title}
                                         name="title"
                                         onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+
+                                <div className="mb-3">
+                                    <label htmlFor="ownerRole" className="form-label">Your Role on This Project</label>
+                                    <input
+                                        type="text"
+                                        id="ownerRole"
+                                        className="form-control"
+                                        value={formData.ownerRole}
+                                        name="ownerRole"
+                                        onChange={handleChange}
+                                        placeholder="e.g. Team Lead, Full Stack Developer"
                                         required
                                     />
                                 </div>
