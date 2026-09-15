@@ -1,17 +1,37 @@
 import { useEffect, useState } from 'react';
-import { getJoinRequests } from '../../services/joinRequestService';
+import { getJoinRequests, getMyJoinRequests, updateJoinRequest, cancelJoinRequest } from '../../services/joinRequestService';
 
 const JoinRequests = () => {
   const [requests, setRequests] = useState([]);
+  const [myRequests, setMyRequests] = useState([]);
 
   useEffect(() => {
-    const fetchJoinRequests = async () => {
-      const data = await getJoinRequests();
-      setRequests(data);
+  const fetchJoinRequests = async () => {
+    const ownerRequests = await getJoinRequests();
+    const userRequests = await getMyJoinRequests();
+
+    setRequests(ownerRequests);
+    setMyRequests(userRequests);
+  };
+
+  fetchJoinRequests();
+}, []);
+
+    const handleUpdate = async (request, action) => {
+    await updateJoinRequest(request.project._id, request._id, action);
+
+    setRequests(
+        requests.filter((item) => item._id !== request._id)
+    );
     };
 
-    fetchJoinRequests();
-  }, []);
+    const handleCancel = async (request) => {
+    await cancelJoinRequest(request.project._id, request._id);
+
+    setMyRequests(
+        myRequests.filter((item) => item._id !== request._id)
+    );
+    };
 
   return (
     <div className="container py-4">
@@ -48,6 +68,7 @@ const JoinRequests = () => {
                 <button
                   type="button"
                   className="btn btn-outline-success rounded-circle"
+                  onClick={() => handleUpdate(request, 'accept')}
                 >
                   <i className="bi bi-check-lg"></i>
                 </button>
@@ -55,6 +76,7 @@ const JoinRequests = () => {
                 <button
                   type="button"
                   className="btn btn-outline-danger rounded-circle"
+                  onClick={() => handleUpdate(request, 'reject')}
                 >
                   <i className="bi bi-x-lg"></i>
                 </button>
@@ -64,6 +86,33 @@ const JoinRequests = () => {
           </div>
         ))
       )}
+        <h2 className="mt-5 mb-3">My Join Requests</h2>
+        {myRequests.length === 0 ? (
+            <p>No join requests sent.</p>
+             ) : (
+            myRequests.map((request) => (
+            <div key={request._id} className="card mb-3 shadow-sm">
+            <div className="card-body">
+                <h5 className="mb-2">
+                {request.project?.title || "Project no longer available"}
+                </h5>
+
+                <p className="mb-1">
+                <strong>Role:</strong> {request.role}
+                </p>
+
+                {request.message && (
+                <p className="mb-0">
+                    <strong>Message:</strong> {request.message}
+                </p>
+                )}
+                
+                {request.project && <button type="button" className="btn btn-outline-danger mt-3" onClick={() => handleCancel(request)}>Cancel Request</button>}
+                
+            </div>
+            </div>
+        ))
+        )}
     </div>
   );
 };

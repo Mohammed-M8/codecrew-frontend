@@ -14,6 +14,16 @@ const getJoinRequests = async () => {
   }
 };
 
+const getMyJoinRequests = async () => {
+  const res = await fetch(`${BASE_URL}/my-join-requests`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
+
+  return await res.json();
+};
+
 const createJoinRequest = async (projectId, requestData) => {
   const res = await fetch(`${BASE_URL}/${projectId}/join-requests`, {
     method: 'POST',
@@ -31,4 +41,35 @@ const createJoinRequest = async (projectId, requestData) => {
   return data;
 };
 
-export { getJoinRequests, createJoinRequest };
+const updateJoinRequest = async (projectId, requestId, action) => {
+  const res = await fetch(`${BASE_URL}/${projectId}/join-requests/${requestId}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    body: JSON.stringify({ action }),
+  });
+
+  return res.json();
+};
+
+
+const cancelJoinRequest = async (projectId, requestId) => {
+  const res = await fetch(`${BASE_URL}/${projectId}/join-requests/${requestId}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
+
+  return res.json();
+};
+
+export { 
+        getJoinRequests,
+        getMyJoinRequests, 
+        createJoinRequest, 
+        updateJoinRequest, 
+        cancelJoinRequest
+    };
