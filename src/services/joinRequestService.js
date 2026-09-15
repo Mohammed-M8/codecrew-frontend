@@ -8,12 +8,27 @@ const getJoinRequests = async () => {
       },
     });
 
-    const data = await res.json();
-
-    return data;
+    return await res.json();
   } catch (error) {
     console.log(error);
   }
 };
 
-export { getJoinRequests };
+const createJoinRequest = async (projectId, requestData) => {
+  const res = await fetch(`${BASE_URL}/${projectId}/join-requests`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    body: JSON.stringify(requestData),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) throw new Error(data.err);
+
+  return data;
+};
+
+export { getJoinRequests, createJoinRequest };
