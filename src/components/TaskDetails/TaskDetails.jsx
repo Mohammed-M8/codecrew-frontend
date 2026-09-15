@@ -44,7 +44,14 @@ function TaskDetail() {
     }
 
 
-    if (!task) return (<main>Loading...</main>)
+    if (!task) return (<div
+        className="d-flex justify-content-center align-items-center"
+        style={{ minHeight: "60vh" }}
+    >
+        <div className="spinner-border spinner-border-lg text-primary" role="status">
+        </div>
+    </div>)
+
     const isMissing = task.status !== 'completed' && new Date(task.dueDate) < new Date()
     const isCreator = task.createdBy === user._id;
 

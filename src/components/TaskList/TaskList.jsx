@@ -6,7 +6,7 @@ import { useParams } from "react-router";
 
 function TaskList() {
     const { user } = useContext(UserContext);
-    const [tasks, setTasks] = useState([]);
+    const [tasks, setTasks] = useState(null);
     const { projectId, taskId } = useParams();
     const [filter, setFilter] = useState('all');
 
@@ -35,7 +35,13 @@ function TaskList() {
     }
 
 
-    if (!tasks) return (<main>Loading...</main>)
+    if (!tasks) return (<div
+        className="d-flex justify-content-center align-items-center"
+        style={{ minHeight: "60vh" }}
+    >
+        <div className="spinner-border spinner-border-lg text-primary" role="status">
+        </div>
+    </div>)
 
     const filteredTasks = tasks.filter((task) => {
         if (filter === 'all') return true;

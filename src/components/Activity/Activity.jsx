@@ -5,7 +5,7 @@ import TaskCard from "../TaskCard/TaskCard";
 
 function Activity() {
     const { user } = useContext(UserContext);
-    const [tasks, setTasks] = useState([]);
+    const [tasks, setTasks] = useState(null);
 
 
     useEffect(() => {
@@ -40,8 +40,17 @@ function Activity() {
 
 
 
-    if (!tasks) return (<main>Loading...</main>)
-
+    if (!tasks) {
+        return (
+            <div
+                className="d-flex justify-content-center align-items-center"
+                style={{ minHeight: "60vh" }}
+            >
+                <div className="spinner-border spinner-border-lg text-primary" role="status">
+                </div>
+            </div>
+        );
+    }
     return (<>
         <div className="cards-container" style={{
             width: "80%",
