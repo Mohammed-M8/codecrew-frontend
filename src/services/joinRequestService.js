@@ -14,6 +14,16 @@ const getJoinRequests = async () => {
   }
 };
 
+const getMyJoinRequests = async () => {
+  const res = await fetch(`${BASE_URL}/my-join-requests`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
+
+  return await res.json();
+};
+
 const createJoinRequest = async (projectId, requestData) => {
   const res = await fetch(`${BASE_URL}/${projectId}/join-requests`, {
     method: 'POST',
@@ -31,4 +41,4 @@ const createJoinRequest = async (projectId, requestData) => {
   return data;
 };
 
-export { getJoinRequests, createJoinRequest };
+export { getJoinRequests,getMyJoinRequests, createJoinRequest};
