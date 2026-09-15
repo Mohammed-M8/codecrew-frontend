@@ -6,7 +6,9 @@ import { UserContext } from "../../contexts/UserContext";
 
 function TaskCard({ task, handleStatusChange }) {
     const { user } = useContext(UserContext);
-    const isMissing = task.status !== 'completed' && new Date(task.dueDate) < new Date()
+    const isMissing = task.status !== 'completed' && new Date(task.dueDate).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)
+    const isCreator = task.createdBy === user._id;
+
     return (
         <div className={`card task-card ${isMissing ? "missed-task" : "shadow-sm"}`}>
             <div className="card-body d-flex align-items-center">
@@ -27,6 +29,15 @@ function TaskCard({ task, handleStatusChange }) {
                             "><i className="bi bi-exclamation-triangle-fill text-danger ms-2"></i>
                                 <span className="ms-2"
                                 > Due date Missed</span></div>) : ""}
+                        {isCreator ?
+                            <Link
+                                to={`/projects/${task.project._id}/tasks/${task._id}/edit`}
+                                className="btn btn-outline-primary ms-2"
+                            >
+                                <i className="bi bi-pencil"></i>
+                                <span className="ms-1">Edit</span>
+                            </Link>
+                            : ''}
                     </div>
 
                     <p className="mb-1 text-muted">

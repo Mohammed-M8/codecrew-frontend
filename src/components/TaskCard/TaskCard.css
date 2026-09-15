@@ -62,6 +62,7 @@
 
 .missed-task {
     box-shadow: 0 0 8px rgba(220, 53, 69, 0.7);
+    background-color: #fff1f2;
 }
 
 .missing span {

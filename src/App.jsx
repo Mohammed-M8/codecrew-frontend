@@ -21,6 +21,7 @@ import TaskList from './components/TaskList/TaskList';
 import CreateProjectForm from './components/CreateProjectForm/CreateProjectForm';
 import TaskForm from './components/TaskForm/TaskForm';
 import EditProjectForm from './components/EditProjectForm/EditProjectForm';
+import EditTask from './components/EditTask/EditTask';
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -41,10 +42,11 @@ const App = () => {
                 <Route path='tasks' element={<><h1>Tasks</h1><TaskList /></>} />
                 <Route path='requests' element={<h1>Requests</h1>} />
               </Route>
-              <Route path='projects/:projectId/edit' element={<EditProjectForm/>}/>
+              <Route path='projects/:projectId/edit' element={<EditProjectForm />} />
 
 
               <Route path='projects/:projectId/tasks/new' element={<TaskForm />}></Route>
+              <Route path='projects/:projectId/tasks/:taskId/edit' element={<EditTask />}></Route>
 
               <Route path='projects/:projectId/tasks/:taskId' element={<TaskDetail />}></Route>
 
