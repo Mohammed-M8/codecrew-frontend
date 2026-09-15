@@ -32,6 +32,7 @@ function TaskForm() {
         event.preventDefault();
         handleAddTask(formData);
         setFormData(initialState);
+        navigate(`/projects/${projectId}/tasks`);
     }
     function addMember() {
         const findMember = project.members.find((member) => selectedMember === member.user._id);
