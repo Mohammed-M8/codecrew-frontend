@@ -19,6 +19,7 @@ import ProjectInfo from './components/ProjectInfo/ProjectInfo';
 import TaskDetail from './components/TaskDetails/TaskDetails';
 import TaskList from './components/TaskList/TaskList';
 import CreateProjectForm from './components/CreateProjectForm/CreateProjectForm';
+import TaskForm from './components/TaskForm/TaskForm';
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -41,6 +42,7 @@ const App = () => {
               </Route>
 
 
+              <Route path='projects/:projectId/tasks/new' element={<TaskForm />}></Route>
 
               <Route path='projects/:projectId/tasks/:taskId' element={<TaskDetail />}></Route>
 

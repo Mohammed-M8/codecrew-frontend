@@ -33,7 +33,6 @@ function Activity() {
     if (!tasks) return (<main>Loading...</main>)
 
     return (<>
-
         <div className="cards-container" style={{
             width: "80%",
             margin: "0 auto"

@@ -1,12 +1,25 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { Navigate, useNavigate, useParams } from "react-router";
+import * as projectService from '../../services/projectsService';
+
 
 const initialState = { title: '', description: '', assignedTo: [], dueDate: '' }
-const members = [{ _id: 1, username: 'hawra' }, { _id: 2, username: 'mohammed' },
-{ _id: 3, username: 'hissa' }
-]
+
 function TaskForm() {
+    const { projectId } = useParams();
     const [formData, setFormData] = useState(initialState);
     const [selectedMember, setSelectedMember] = useState('');
+    const [project, setProject] = useState(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        async function getProject() {
+            const data = await projectService.show(projectId);
+            setProject(data);
+        }
+
+        getProject();
+    }, [projectId]);
 
     function handleChange(event) {
         setFormData({ ...formData, [event.target.name]: event.target.value })
@@ -15,7 +28,8 @@ function TaskForm() {
         event.preventDefault();
     }
     function addMember() {
-        setFormData({ ...formData, assignedTo: [...formData.assignedTo, selectedMember] })
+        const findMember = project.members.find((member) => selectedMember === member.user._id);
+        setFormData({ ...formData, assignedTo: [...formData.assignedTo, findMember.user] })
         setSelectedMember('');
 
     }
@@ -24,55 +38,120 @@ function TaskForm() {
         setFormData({ ...formData, assignedTo: updatedMembers })
 
     }
-    return (<form onSubmit={handleSubmit}>
-        <div className="form-group">
-            <label htmlFor="title">Title</label>
-            <input onChange={handleChange} value={formData.title} name='title' type="text" className="form-control" id="title" placeholder="add a title..." />
-        </div>
-        <div className="form-group">
-            <label htmlFor="description">Example textarea</label>
-            <textarea onChange={handleChange} value={formData.description} name='description' className="form-control" id="description" rows="3"></textarea>
-        </div>
-        <div className="form-group">
-            <label htmlFor="assignedTo">Assigned to:</label>
-            <select onChange={(e) => setSelectedMember(e.target.value)} value={selectedMember} className="form-select" aria-label="assignedTo">
-                <option>Choose a member</option>
-                {members
-                    .filter((member) => !formData.assignedTo.includes(member._id))
-                    .map((member) => (
-                        <option key={member._id} value={member._id}>
-                            {member.username}
-                        </option>
-                    ))}
-            </select>
-            <button type="button" onClick={addMember} className='btn btn-success'>Add</button>
-            {formData.assignedTo.length > 0 && (
-                <div className="d-flex flex-wrap gap-2 mt-2">
-                    {formData.assignedTo.map((member) => {
-                        return (<span key={member._id} className="badge text-bg-secondary d-flex align-items-center gap-1">
-                            {member}
-                            <button
-                                type="button"
-                                className="btn-close btn-close-white"
-                                style={{ fontSize: '0.6rem' }}
-                                aria-label={`Remove ${member}`}
-                                onClick={() => removeMember(member)}
-                            ></button>
-                        </span>
-                        )
-                    })}</div>)}
+    const isFormInvalid = () => {
+        return !(
+            formData.title &&
+            formData.description &&
+            formData.assignedTo.length > 0
+        );
+    };
 
-        </div>
-        <div className="d-flex justify-content-center">
-            <div
-                className="border rounded"
-                data-coreui-locale="en-US"
-                data-coreui-start-date="2024/02/13"
-                data-coreui-toggle="calendar"
-            ></div>
-        </div>
+    return (
+        <main className="container">
+            <h1 className="h3 mb-4">Create Task</h1>
+            <div className="row">
+                <div className="col-12 col-md-10 col-lg-8">
+                    <div className="card shadow-sm">
+                        <div className="card-body p-4">
 
-    </form>)
+                            <form autoComplete="off" onSubmit={handleSubmit}>
+                                <div className="mb-3">
+                                    <label htmlFor="title" className="form-label">Title</label>
+                                    <input
+                                        type="text"
+                                        autoComplete="off"
+                                        id="title"
+                                        className="form-control"
+                                        value={formData.title}
+                                        name="title"
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+
+                                <div className="mb-3">
+                                    <label htmlFor="description" className="form-label">Description</label>
+                                    <input
+                                        type="text"
+                                        autoComplete="off"
+                                        id="description"
+                                        className="form-control"
+                                        value={formData.description}
+                                        name="description"
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+
+
+                                <div className="mb-3">
+                                    <label htmlFor="assignedTo" className="form-label">Assigned To</label>
+                                    <div className="input-group">
+                                        <select onChange={(e) => setSelectedMember(e.target.value)} value={selectedMember} className="form-select" aria-label="assignedTo">
+                                            <option value='' disabled>Choose a member</option>
+                                            {project?.members
+                                                .filter((member) => !formData.assignedTo.includes(member.user))
+                                                .map((member) => (
+                                                    <option key={member.user._id} value={member.user._id}>
+                                                        {member.user.username}
+                                                    </option>
+                                                ))}
+                                        </select>
+                                        <button type="button" disabled={selectedMember === ''} className="btn btn-outline-secondary" onClick={addMember}>
+                                            Add
+                                        </button>
+                                    </div>
+
+                                </div>
+
+                                <div className="mb-4">
+                                    {formData.assignedTo.length > 0 && (
+                                        <ul className="list-group mt-2">
+                                            {formData.assignedTo.map((member) => (
+                                                <li key={member._id} className="list-group-item d-flex justify-content-between align-items-center">
+                                                    {member.username}
+                                                    <button
+                                                        type="button"
+                                                        className="btn-close"
+                                                        onClick={() => removeMember(member)}
+                                                    ></button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
+
+                                <div className="mb-3">
+                                    <label htmlFor="dueDate" className="form-label">
+                                        Due Date
+                                    </label>
+
+                                    <input
+                                        type="date"
+                                        id="dueDate"
+                                        name="dueDate"
+                                        value={formData.dueDate}
+                                        onChange={handleChange}
+                                        min={new Date().toISOString().split("T")[0]}
+                                        className="form-control"
+                                    />
+                                </div>
+
+                                <div className="d-flex gap-2">
+                                    <button disabled={isFormInvalid()} type="submit" className="btn btn-primary flex-grow-1">
+                                        Create Task
+                                    </button>
+                                    <button type="button" className="btn btn-outline-secondary" onClick={() => navigate(-1)}>
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div >
+        </main >
+    )
 
 }
 export default TaskForm
