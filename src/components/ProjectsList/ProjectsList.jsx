@@ -1,11 +1,14 @@
-import { useContext, useMemo } from "react";
+import { useContext, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { UserContext } from "../../contexts/UserContext";
+import JoinProjectForm from "../JoinProjectForm/JoinProjectForm";
 import getRandomColor from "../../../helpers/getRandomColor";
 import "./ProjectsList.css";
 
+
 export default function ProjectsList({ projects, variant }) {
     const { user } = useContext(UserContext)
+    const [selectedProject, setSelectedProject] = useState(null);
 const navigate=useNavigate();
 
     const stripColors = useMemo(() => {
@@ -74,13 +77,15 @@ const navigate=useNavigate();
 
                                         ? <p className="text-muted mb-0 text-center">Joined</p>
 
-                                        : <button className="btn btn-primary">Join</button>
+                                        : <button className="btn btn-primary" onClick={(e) => { e.stopPropagation(); setSelectedProject(p); }}>Join</button>
 
-                                )}                            </div>
+                                )}                        
+                                </div>
                         </div>
                     </div>
                 </div>
             ))}
+            {selectedProject && <JoinProjectForm project={selectedProject} onClose={() => setSelectedProject(null)} />}
         </div>
     )
 }
