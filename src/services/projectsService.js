@@ -2,13 +2,28 @@ import { getHeaders } from "../../helpers/getHeaders";
 
 const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/projects`;
 
-const index = async () => {
+const index = async (search) => {
+
     try {
-        const data = await fetch(BASE_URL).then(res => res.json())
+
+        let url = BASE_URL
+
+        if (search) {
+
+            url = url + `?search=${search}`
+
+        }
+
+        const data = await fetch(`${url}`).then(res => res.json())
+
         return data;
+
     } catch (error) {
+
         console.log(error)
+
     }
+
 }
 
 const userProjects = async () => {
