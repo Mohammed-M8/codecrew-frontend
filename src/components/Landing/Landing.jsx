@@ -9,16 +9,21 @@ const Landing = () => {
           Sign up now, or sign in to see your dashboard.
         </p>
       </div>
-      <div className="col-12 col-md-5">
-        <div className="card h-100 shadow-sm">
-          <div className="card-body text-center d-flex flex-column">
-            <h5 className="card-title">Browse Projects?</h5>
-            <p className="card-text flex-grow-1">
-              Look up projects that are created by users at CodeCrew            </p>
-            <Link to="/projects" className="btn btn-primary">View Projects</Link>
+
+      <div className="row justify-content-center g-4 mb-4">
+        <div className="col-12 col-md-5">
+          <div className="card h-100 shadow-sm">
+            <div className="card-body text-center d-flex flex-column">
+              <h5 className="card-title">Browse Projects?</h5>
+              <p className="card-text flex-grow-1">
+                Look up projects that are created by users at CodeCrew
+              </p>
+              <Link to="/projects" className="btn btn-primary">View Projects</Link>
+            </div>
           </div>
         </div>
       </div>
+
       <div className="row justify-content-center g-4">
         <div className="col-12 col-md-5">
           <div className="card h-100 shadow-sm">
