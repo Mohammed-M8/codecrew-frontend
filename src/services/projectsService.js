@@ -77,4 +77,23 @@ const deleteProject = async (projectId) => {
     return true;
 };
 
-export { index, userProjects, show, create, deleteProject }
+const update = async (projectId, formData) => {
+    const res = await fetch(`${BASE_URL}/${projectId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(formData),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+        throw new Error(data.err || 'Something went wrong');
+    }
+
+    return data;
+};
+
+export { index, userProjects, show, create, deleteProject, update }
