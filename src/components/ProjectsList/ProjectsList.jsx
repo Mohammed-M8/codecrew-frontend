@@ -1,9 +1,8 @@
 import { Link } from "react-router";
 
 export default function ProjectsList({ projects,variant }) {
-
-    const totalRequired = (requiredRoles) =>
-        requiredRoles.reduce((sum, r) => sum + r.quantity, 0);
+const totalRequired = (requiredRoles) =>
+    requiredRoles.reduce((sum, r) => sum + r.quantity, 0) + 1;
 
     const percentFilled = (p) => {
         const required = totalRequired(p.requiredRoles);

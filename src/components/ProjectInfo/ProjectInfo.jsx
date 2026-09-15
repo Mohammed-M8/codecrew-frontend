@@ -20,9 +20,9 @@ export default function ProjectInfo() {
 
         getProject();
     }, [projectId])
-
-    const totalRequired = (requiredRoles) =>
-        requiredRoles.reduce((sum, r) => sum + r.quantity, 0);
+    
+const totalRequired = (requiredRoles) =>
+    requiredRoles.reduce((sum, r) => sum + r.quantity, 0) + 1;
 
     const percentFilled = (p) => {
         const required = totalRequired(p.requiredRoles);
