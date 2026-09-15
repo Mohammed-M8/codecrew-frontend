@@ -25,9 +25,10 @@ export default function ProjectDetails() {
         <main className="container py-5">
             <h1 className="mb-4">Project Details</h1>
             <div className="d-flex justify-content-end">
-                <Link to='tasks/new' className="btn btn-primary">
-                    + Create new task
-                </Link>  </div>
+                {isMember ?
+                    <Link to='tasks/new' className="btn btn-primary">
+                        + Create new task
+                    </Link> : ''} </div>
             <ul className="nav nav-tabs mb-4">
                 <li className="nav-item">
                     <NavLink

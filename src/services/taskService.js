@@ -89,4 +89,30 @@ const createTask = async (projectId, taskData) => {
         console.log(err)
     }
 }
-export default { activity, updateStatus, show, index, createTask };
+
+const updateTask = async (projectId, taskId, updatedData) => {
+    try {
+        const res = await fetch(`${BASE_URL}/projects/${projectId}/tasks/${taskId}`,
+            {
+                method: 'PUT',
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                },
+
+                body: JSON.stringify(updatedData),
+
+            }
+        );
+
+        if (!res.ok) {
+            throw new Error(res.json());
+        }
+
+        return await res.json();
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+export default { activity, updateStatus, show, index, createTask, updateTask };
