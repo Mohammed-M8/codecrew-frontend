@@ -1,16 +1,20 @@
-import { useContext, useState } from "react";
-
-import { Link } from "react-router";
-
+import { useContext, useMemo } from "react";
+import { Link, useNavigate } from "react-router";
 import { UserContext } from "../../contexts/UserContext";
-
-import JoinProjectForm from "../JoinProjectForm/JoinProjectForm";
+import getRandomColor from "../../../helpers/getRandomColor";
+import "./ProjectsList.css";
 
 export default function ProjectsList({ projects, variant }) {
-
     const { user } = useContext(UserContext)
+const navigate=useNavigate();
 
-    const [selectedProject, setSelectedProject] = useState(null);
+    const stripColors = useMemo(() => {
+        const map = {};
+        projects.forEach((p) => {
+            map[p._id] = getRandomColor();
+        });
+        return map;
+    }, [projects]);
 
     const totalRequired = (requiredRoles) =>
         requiredRoles.reduce((sum, r) => sum + r.quantity, 0) + 1;
@@ -22,8 +26,11 @@ export default function ProjectsList({ projects, variant }) {
     };
 
     const isAlreadyMember = (p) => {
+
         if (!user) return false;
+
         return p.members.some(m => (m.user?._id || m.user) === user._id);
+
     };
 
     const isLoggedIn = !!user
@@ -31,7 +38,9 @@ export default function ProjectsList({ projects, variant }) {
     return (
         <div className="d-flex flex-column gap-3">
             {projects.map((p) => (
-                <div key={p._id} className="card shadow-sm">
+                <div onClick={()=>navigate(`/projects/${p._id}`)} key={p._id} className="card project-card shadow-sm">
+                    <div className="project-strip" style={{ backgroundColor: stripColors[p._id] }} />
+
                     <div className="card-body">
                         <div className="row align-items-center">
                             <div className="col-8">
@@ -40,7 +49,6 @@ export default function ProjectsList({ projects, variant }) {
                                 <p className="text-muted mb-1">
                                     {p.members.length}/{totalRequired(p.requiredRoles)} members
                                 </p>
-
                                 <div className="progress mb-2" style={{ height: '6px' }} role="progressbar" aria-label="Members filled">
                                     <div
                                         className="progress-bar"
@@ -60,19 +68,19 @@ export default function ProjectsList({ projects, variant }) {
                                 <Link to={`/projects/${p._id}`} className="btn btn-outline-primary">
                                     View Project
                                 </Link>
-
                                 {variant === "search" && isLoggedIn && (
+
                                     isAlreadyMember(p)
+
                                         ? <p className="text-muted mb-0 text-center">Joined</p>
-                                        : <button className="btn btn-primary" onClick={() => setSelectedProject(p)}>Join</button>
-                                )}
-                            </div>
+
+                                        : <button className="btn btn-primary">Join</button>
+
+                                )}                            </div>
                         </div>
                     </div>
                 </div>
             ))}
-
-            {selectedProject && <JoinProjectForm project={selectedProject} onClose={() => setSelectedProject(null)} />}
         </div>
     )
 }
