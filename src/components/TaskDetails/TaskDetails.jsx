@@ -34,27 +34,45 @@ function TaskDetail() {
 
 
     if (!task) return (<main>Loading...</main>)
+    const isMissing = task.status !== 'completed' && new Date(task.dueDate) < new Date()
+
     return (
         <div className="container py-4">
 
             <Link
                 to={-1}
-                className="text-decoration-none text-dark"
+                className="d-inline-block mb-2 text-decoration-none text-dark"
+                style={{ fontSize: '20px' }}
             >
                 ← Back
             </Link>
 
-            <div className="card shadow-sm mt-3">
+            <div className={`card ${isMissing ? "" : "shadow-sm"}`}
+                style={{
+                    boxShadow: "0 0 8px rgba(220, 53, 69, 0.7)"
+                }}
+            >
 
                 <div className="card-header bg-white p-4">
                     <div className="d-flex justify-content-between align-items-start">
 
                         <div>
-                            <h2 className="mb-2">{task.title}</h2>
-
+                            <h2 className="mb-2 d-flex align-items-start">{task.title}
+                                {isMissing ?
+                                    (<div className="missing d-flex align-items-center
+                            "><i className="bi bi-exclamation-triangle-fill text-danger ms-2"></i>
+                                        <span className="ms-2"
+                                            style={{
+                                                fontSize: "20px",
+                                                color: "rgba(220, 53, 69, 0.6)",
+                                                fontWeight: "bold"
+                                            }}
+                                        > Due date Missed</span></div>) : ""}
+                            </h2>
                             <p className="text-muted mb-0">
                                 {task.project.title}
                             </p>
+
                         </div>
 
                         <span

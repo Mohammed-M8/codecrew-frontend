@@ -59,3 +59,13 @@
     height: 42px;
     white-space: nowrap;
 }
+
+.missed-task {
+    box-shadow: 0 0 8px rgba(220, 53, 69, 0.7);
+}
+
+.missing span {
+    font-size: 15px;
+    color: rgba(220, 53, 69, 0.6);
+    font-weight: bold;
+}

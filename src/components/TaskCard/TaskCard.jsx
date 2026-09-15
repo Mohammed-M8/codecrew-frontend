@@ -6,9 +6,9 @@ import { UserContext } from "../../contexts/UserContext";
 
 function TaskCard({ task, handleStatusChange }) {
     const { user } = useContext(UserContext);
-
+    const isMissing = task.status !== 'completed' && new Date(task.dueDate) < new Date()
     return (
-        <div className="card task-card shadow-sm">
+        <div className={`card task-card ${isMissing ? "missed-task" : "shadow-sm"}`}>
             <div className="card-body d-flex align-items-center">
 
                 <div className="task-strip"
@@ -17,9 +17,16 @@ function TaskCard({ task, handleStatusChange }) {
 
 
                 <div className="flex-grow-1 ms-3">
-                    <div className="d-flex justify-content-between align-items-center">
+                    <div className="d-flex align-items-center">
                         <Link
-                            to={`/projects/${task.project._id}/tasks/${task._id}`}> <h5 className="mb-1">{task.title}</h5></Link>
+                            to={`/projects/${task.project._id}/tasks/${task._id}`}>
+                            <h5 className="mb-1">{task.title}</h5>
+                        </Link>
+                        {isMissing ?
+                            (<div className=" missing d-flex align-items-center
+                            "><i className="bi bi-exclamation-triangle-fill text-danger ms-2"></i>
+                                <span className="ms-2"
+                                > Due date Missed</span></div>) : ""}
                     </div>
 
                     <p className="mb-1 text-muted">
