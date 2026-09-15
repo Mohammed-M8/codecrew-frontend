@@ -7,6 +7,7 @@ import SignUpForm from './components/SignUpForm/SignUpForm';
 import SignInForm from './components/SignInForm/SignInForm';
 import Dashboard from './components/Dashboard/Dashboard'
 import Landing from './components/Landing/Landing'
+import Activity from "./components/Activity/Activity";
 import JoinRequests from './components/JoinRequests/JoinRequests';
 
 // Context
@@ -15,6 +16,8 @@ import ProjectsSearch from './components/ProjectsSearch/ProjectsSearch';
 import MyProjects from './components/MyProjects/MyProjects';
 import ProjectDetails from './components/ProjectLayout/ProjectLayout';
 import ProjectInfo from './components/ProjectInfo/ProjectInfo';
+import TaskDetail from './components/TaskDetails/TaskDetails';
+import TaskList from './components/TaskList/TaskList';
 import CreateProjectForm from './components/CreateProjectForm/CreateProjectForm';
 
 const App = () => {
@@ -33,15 +36,17 @@ const App = () => {
               <Route path='projects/new' element={<CreateProjectForm />} />
               <Route path='projects/:projectId/' element={<ProjectDetails />}>
                 <Route index element={<ProjectInfo />} />
-                <Route path='tasks' element={<h1>Tasks</h1>} />
+                <Route path='tasks' element={<><h1>Tasks</h1><TaskList /></>} />
                 <Route path='requests' element={<h1>Requests</h1>} />
               </Route>
 
 
+
+              <Route path='projects/:projectId/tasks/:taskId' element={<TaskDetail />}></Route>
+
               <Route path='requests' element={<JoinRequests />} />
 
-
-              <Route path='tasks' element={<h1>Tasks</h1>} />
+              <Route path='tasks' element={<><h1>Tasks</h1><Activity /></>} />
             </Route>
           </> :
           <>
