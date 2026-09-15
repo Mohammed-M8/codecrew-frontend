@@ -52,6 +52,7 @@
 
 .task-actions .badge {
     padding: 6px 10px;
+    border-radius: 20px;
 }
 
 .task-actions .btn {
@@ -62,7 +63,7 @@
 
 .missed-task {
     box-shadow: 0 0 8px rgba(220, 53, 69, 0.7);
-    background-color: #fff1f2;
+    background-color: #fff7f7;
 }
 
 .missing span {

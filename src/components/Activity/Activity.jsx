@@ -30,6 +30,16 @@ function Activity() {
         catch (err) { console.log(err.message) }
     }
 
+    const handleTaskDelelte = async (projectId, taskId) => {
+        try {
+            await taskService.deleteTask(projectId, taskId);
+            setTasks(tasks.filter((task) => task._id !== taskId))
+        }
+        catch (err) { console.log(err.message) }
+    }
+
+
+
     if (!tasks) return (<main>Loading...</main>)
 
     return (<>
@@ -40,7 +50,9 @@ function Activity() {
             {
                 tasks.map((task) => {
                     return <TaskCard task={task} key={task._id}
-                        handleStatusChange={handleStatusChange} />
+                        handleStatusChange={handleStatusChange}
+                        handleTaskDelelte={handleTaskDelelte}
+                    />
                 })
             }</div></>)
 }

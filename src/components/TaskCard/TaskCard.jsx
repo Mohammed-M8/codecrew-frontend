@@ -4,10 +4,11 @@ import { Link } from "react-router";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/UserContext";
 
-function TaskCard({ task, handleStatusChange }) {
+function TaskCard({ task, handleStatusChange, handleTaskDelelte }) {
     const { user } = useContext(UserContext);
     const isMissing = task.status !== 'completed' && new Date(task.dueDate).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)
     const isCreator = task.createdBy === user._id;
+
 
     return (
         <div className={`card task-card ${isMissing ? "missed-task" : "shadow-sm"}`}>
@@ -30,13 +31,19 @@ function TaskCard({ task, handleStatusChange }) {
                                 <span className="ms-2"
                                 > Due date Missed</span></div>) : ""}
                         {isCreator ?
-                            <Link
+                            <> <Link
                                 to={`/projects/${task.project._id}/tasks/${task._id}/edit`}
                                 className="btn btn-outline-primary ms-2"
                             >
                                 <i className="bi bi-pencil"></i>
                                 <span className="ms-1">Edit</span>
                             </Link>
+                                <button
+                                    onClick={() => handleTaskDelelte(task.project._id, task._id)}
+                                    className="btn btn-outline-danger ms-2">
+                                    <i className="bi bi-trash"></i>
+                                    Delete
+                                </button></>
                             : ''}
                     </div>
 
