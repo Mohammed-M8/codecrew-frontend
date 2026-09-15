@@ -1,6 +1,9 @@
 import { Link } from "react-router";
+import { useState } from "react";
+import JoinProjectForm from "../JoinProjectForm/JoinProjectForm";
 
 export default function ProjectsList({ projects,variant }) {
+    const [selectedProject, setSelectedProject] = useState(null);
 
     const totalRequired = (requiredRoles) =>
         requiredRoles.reduce((sum, r) => sum + r.quantity, 0);
@@ -41,12 +44,14 @@ export default function ProjectsList({ projects,variant }) {
                                 <Link to={`/projects/${p._id}`} className="btn btn-outline-primary">
                                     View Project
                                 </Link>
-                                {variant==="search"&&<button className="btn btn-primary">Join</button>}
+                                {variant === "search" && <button className="btn btn-primary" onClick={() => setSelectedProject(p)}>Join</button>}
                             </div>
                         </div>
                     </div>
                 </div>
             ))}
+
+            {selectedProject && <JoinProjectForm project={selectedProject} onClose={() => setSelectedProject(null)} />}
         </div>
     )
 }
