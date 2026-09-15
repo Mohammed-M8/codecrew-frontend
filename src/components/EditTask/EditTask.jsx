@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react"
-import { Navigate, useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import * as projectService from '../../services/projectsService';
 import taskService from "../../services/taskService";
 
 
 const initialState = { title: '', description: '', assignedTo: [], dueDate: '' }
 
-function TaskForm() {
-    const { projectId } = useParams();
+function EditTask() {
+    const { projectId, taskId } = useParams();
     const [project, setProject] = useState(null);
     const [formData, setFormData] = useState(initialState);
     const [selectedMember, setSelectedMember] = useState('');
     const navigate = useNavigate();
-
 
     useEffect(() => {
         async function getProject() {
@@ -23,15 +22,25 @@ function TaskForm() {
         getProject();
     }, [projectId]);
 
-    const handleAddTask = async (taskData) => {
-        await taskService.createTask(projectId, taskData);
+    useEffect(() => {
+        async function getTask() {
+            const data = await taskService.show(projectId, taskId);
+            setFormData({ ...data, dueDate: data.dueDate.split("T")[0] })
+        }
+
+        getTask();
+    }, [taskId]);
+
+
+    const handleUpdateTask = async (taskData) => {
+        await taskService.updateTask(projectId, taskId, taskData);
     }
     function handleChange(event) {
         setFormData({ ...formData, [event.target.name]: event.target.value })
     }
     function handleSubmit(event) {
         event.preventDefault();
-        handleAddTask(formData);
+        handleUpdateTask(formData);
         setFormData(initialState);
         navigate(`/projects/${projectId}/tasks`);
     }
@@ -98,7 +107,12 @@ function TaskForm() {
                                         <select onChange={(e) => setSelectedMember(e.target.value)} value={selectedMember} className="form-select" aria-label="assignedTo">
                                             <option value='' disabled>Choose a member</option>
                                             {project?.members
-                                                .filter((member) => !formData.assignedTo.includes(member.user))
+                                                .filter((member) =>
+                                                    !formData.assignedTo.some(
+                                                        (assignedMember) =>
+                                                            assignedMember._id === member.user._id
+                                                    )
+                                                )
                                                 .map((member) => (
                                                     <option key={member.user._id} value={member.user._id}>
                                                         {member.user.username}
@@ -147,7 +161,7 @@ function TaskForm() {
 
                                 <div className="d-flex gap-2">
                                     <button disabled={isFormInvalid()} type="submit" className="btn btn-primary flex-grow-1">
-                                        Create Task
+                                        Update Task
                                     </button>
                                     <button type="button" className="btn btn-outline-secondary" onClick={() => navigate(-1)}>
                                         Cancel
@@ -162,4 +176,4 @@ function TaskForm() {
     )
 
 }
-export default TaskForm
+export default EditTask;
