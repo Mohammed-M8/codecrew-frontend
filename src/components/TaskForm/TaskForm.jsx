@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { Navigate, useNavigate, useParams } from "react-router";
 import * as projectService from '../../services/projectsService';
+import taskService from "../../services/taskService";
 
 
 const initialState = { title: '', description: '', assignedTo: [], dueDate: '' }
@@ -21,11 +22,16 @@ function TaskForm() {
         getProject();
     }, [projectId]);
 
+    const handleAddTask = async (taskData) => {
+        await taskService.createTask(projectId, taskData);
+    }
     function handleChange(event) {
         setFormData({ ...formData, [event.target.name]: event.target.value })
     }
     function handleSubmit(event) {
         event.preventDefault();
+        handleAddTask(formData);
+        setFormData(initialState);
     }
     function addMember() {
         const findMember = project.members.find((member) => selectedMember === member.user._id);

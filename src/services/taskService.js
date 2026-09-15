@@ -64,4 +64,29 @@ const show = async (projectId, taskId) => {
         console.log(err)
     }
 }
-export default { activity, updateStatus, show, index };
+const createTask = async (projectId, taskData) => {
+    try {
+        const res = await fetch(`${BASE_URL}/projects/${projectId}/tasks`,
+            {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                },
+
+                body: JSON.stringify(taskData),
+
+            }
+        );
+
+        if (!res.ok) {
+            throw new Error(res.json());
+        }
+
+        return await res.json();
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+export default { activity, updateStatus, show, index, createTask };
