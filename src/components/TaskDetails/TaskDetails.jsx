@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router";
+import { useContext, useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router";
 import taskService from "../../services/taskService";
+import { UserContext } from "../../contexts/UserContext";
 
 function TaskDetail() {
+    const { user } = useContext(UserContext);
     const { projectId, taskId } = useParams();
     const [task, setTask] = useState(null);
+    const navigate = useNavigate();
 
     function getStatusColor(status) {
         if (status === "todo") return "#A78BFA";
@@ -32,9 +35,25 @@ function TaskDetail() {
         catch (err) { console.log(err.message) }
     }
 
+    const handleTaskDelelte = async (projectId, taskId) => {
+        try {
+            await taskService.deleteTask(projectId, taskId);
+            navigate(-1);
+        }
+        catch (err) { console.log(err.message) }
+    }
 
-    if (!task) return (<main>Loading...</main>)
+
+    if (!task) return (<div
+        className="d-flex justify-content-center align-items-center"
+        style={{ minHeight: "60vh" }}
+    >
+        <div className="spinner-border spinner-border-lg text-primary" role="status">
+        </div>
+    </div>)
+
     const isMissing = task.status !== 'completed' && new Date(task.dueDate) < new Date()
+    const isCreator = task.createdBy === user._id;
 
     return (
         <div className="container py-4">
@@ -68,11 +87,25 @@ function TaskDetail() {
                                                 fontWeight: "bold"
                                             }}
                                         > Due date Missed</span></div>) : ""}
+                                {isCreator && task.status !== "completed" ?
+                                    <><Link
+                                        to={`/projects/${task.project._id}/tasks/${task._id}/edit`}
+                                        className="btn btn-outline-primary ms-2"
+                                    >
+                                        <i className="bi bi-pencil"></i>
+                                        <span className="ms-1">Edit</span>
+                                    </Link>
+                                        <button
+                                            onClick={() => handleTaskDelelte(projectId, taskId)}
+                                            className="btn btn-outline-danger ms-2">
+                                            <i className="bi bi-trash"></i>
+                                            Delete
+                                        </button></>
+                                    : ''}
                             </h2>
                             <p className="text-muted mb-0">
                                 {task.project.title}
                             </p>
-
                         </div>
 
                         <span
@@ -82,7 +115,8 @@ function TaskDetail() {
                                 color:
                                     task.status === "in-progress"
                                         ? "#000"
-                                        : "#fff"
+                                        : "#fff",
+                                fontSize: '15px'
                             }}
                         >
                             {task.status}

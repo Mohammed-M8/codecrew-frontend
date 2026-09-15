@@ -115,4 +115,20 @@ const updateTask = async (projectId, taskId, updatedData) => {
         console.log(err)
     }
 }
-export default { activity, updateStatus, show, index, createTask, updateTask };
+
+const deleteTask = async (projectId, taskId) => {
+    try {
+        const res = await fetch(`${BASE_URL}/projects/${projectId}/tasks/${taskId}`,
+            {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                }
+            }
+        );
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+export default { activity, updateStatus, show, index, createTask, updateTask, deleteTask };

@@ -5,7 +5,7 @@ import TaskCard from "../TaskCard/TaskCard";
 
 function Activity() {
     const { user } = useContext(UserContext);
-    const [tasks, setTasks] = useState([]);
+    const [tasks, setTasks] = useState(null);
 
 
     useEffect(() => {
@@ -30,8 +30,27 @@ function Activity() {
         catch (err) { console.log(err.message) }
     }
 
-    if (!tasks) return (<main>Loading...</main>)
+    const handleTaskDelelte = async (projectId, taskId) => {
+        try {
+            await taskService.deleteTask(projectId, taskId);
+            setTasks(tasks.filter((task) => task._id !== taskId))
+        }
+        catch (err) { console.log(err.message) }
+    }
 
+
+
+    if (!tasks) {
+        return (
+            <div
+                className="d-flex justify-content-center align-items-center"
+                style={{ minHeight: "60vh" }}
+            >
+                <div className="spinner-border spinner-border-lg text-primary" role="status">
+                </div>
+            </div>
+        );
+    }
     return (<>
         <div className="cards-container" style={{
             width: "80%",
@@ -40,7 +59,9 @@ function Activity() {
             {
                 tasks.map((task) => {
                     return <TaskCard task={task} key={task._id}
-                        handleStatusChange={handleStatusChange} />
+                        handleStatusChange={handleStatusChange}
+                        handleTaskDelelte={handleTaskDelelte}
+                    />
                 })
             }</div></>)
 }
