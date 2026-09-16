@@ -1,118 +1,168 @@
 import { useEffect, useState } from 'react';
-import { getJoinRequests, getMyJoinRequests, updateJoinRequest, cancelJoinRequest } from '../../services/joinRequestService';
+import {getJoinRequests, getMyJoinRequests, updateJoinRequest, cancelJoinRequest} from '../../services/joinRequestService';
 
 const JoinRequests = () => {
   const [requests, setRequests] = useState([]);
   const [myRequests, setMyRequests] = useState([]);
+  const [activeTab, setActiveTab] = useState('received');
 
   useEffect(() => {
-  const fetchJoinRequests = async () => {
-    const ownerRequests = await getJoinRequests();
-    const userRequests = await getMyJoinRequests();
+    const fetchJoinRequests = async () => {
+      const ownerRequests = await getJoinRequests();
+      const userRequests = await getMyJoinRequests();
 
-    setRequests(ownerRequests);
-    setMyRequests(userRequests);
-  };
+      setRequests(ownerRequests);
+      setMyRequests(userRequests);
+    };
 
-  fetchJoinRequests();
-}, []);
+    fetchJoinRequests();
+  }, []);
 
-    const handleUpdate = async (request, action) => {
+  const handleUpdate = async (request, action) => {
     await updateJoinRequest(request.project._id, request._id, action);
 
     setRequests(
-        requests.filter((item) => item._id !== request._id)
+      requests.filter((item) => item._id !== request._id)
     );
-    };
+  };
 
-    const handleCancel = async (request) => {
+  const handleCancel = async (request) => {
     await cancelJoinRequest(request.project._id, request._id);
 
     setMyRequests(
-        myRequests.filter((item) => item._id !== request._id)
+      myRequests.filter((item) => item._id !== request._id)
     );
-    };
+  };
 
   return (
     <div className="container py-4">
-      <h1 className="mb-4">Join Requests</h1>
 
-      {requests.length === 0 ? (
-        <p>No join requests.</p>
-      ) : (
-        requests.map((request) => (
-          <div className="card mb-3 shadow-sm" key={request._id}>
-            <div className="card-body d-flex justify-content-between align-items-center">
+      <h1 className="mb-4">Requests</h1>
 
-              <div>
-                <h5 className="mb-2">
-                  {request.project?.title}
-                </h5>
+      <div className="d-flex gap-3 mb-4">
+        <button
+          type="button"
+          className={`btn ${
+            activeTab === 'sent'
+              ? 'btn-primary'
+              : 'btn-outline-secondary'
+          }`}
+          onClick={() => setActiveTab('sent')}
+        >
+          Requests I Sent
+        </button>
 
-                <p className="mb-1">
-                  <strong>Requestor:</strong> {request.requestor?.username}
-                </p>
+        <button
+          type="button"
+          className={`btn ${
+            activeTab === 'received'
+              ? 'btn-primary'
+              : 'btn-outline-secondary'
+          }`}
+          onClick={() => setActiveTab('received')}
+        >
+          Join Requests for My Project
+        </button>
+      </div>
 
-                <p className="mb-1">
-                  <strong>Role:</strong> {request.role}
-                </p>
+      {activeTab === 'received' && (
+        <>
+          <h2 className="mb-3">Join Requests</h2>
 
-                {request.message && (
-                  <p className="mb-0">
-                    <strong>Message:</strong> {request.message}
-                  </p>
-                )}
+          {requests.length === 0 ? (
+            <p>No join requests.</p>
+          ) : (
+            requests.map((request) => (
+              <div className="card mb-3 shadow-sm" key={request._id}>
+                <div className="card-body d-flex justify-content-between align-items-center">
+
+                  <div>
+                    <h5 className="mb-2">
+                      {request.project?.title}
+                    </h5>
+
+                    <p className="mb-1">
+                      <strong>Requestor:</strong> {request.requestor?.username}
+                    </p>
+
+                    <p className="mb-1">
+                      <strong>Role:</strong> {request.role}
+                    </p>
+
+                    {request.message && (
+                      <p className="mb-0">
+                        <strong>Message:</strong> {request.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="d-flex flex-column gap-2 ms-3">
+                    <button
+                      type="button"
+                      className="btn btn-outline-success rounded-circle"
+                      onClick={() => handleUpdate(request, 'accept')}
+                    >
+                      <i className="bi bi-check-lg"></i>
+                    </button>
+
+                    <button
+                      type="button"
+                      className="btn btn-outline-danger rounded-circle"
+                      onClick={() => handleUpdate(request, 'reject')}
+                    >
+                      <i className="bi bi-x-lg"></i>
+                    </button>
+                  </div>
+
+                </div>
               </div>
-
-              <div className="d-flex flex-column gap-2 ms-3">
-                <button
-                  type="button"
-                  className="btn btn-outline-success rounded-circle"
-                  onClick={() => handleUpdate(request, 'accept')}
-                >
-                  <i className="bi bi-check-lg"></i>
-                </button>
-
-                <button
-                  type="button"
-                  className="btn btn-outline-danger rounded-circle"
-                  onClick={() => handleUpdate(request, 'reject')}
-                >
-                  <i className="bi bi-x-lg"></i>
-                </button>
-              </div>
-
-            </div>
-          </div>
-        ))
+            ))
+          )}
+        </>
       )}
-        <h2 className="mt-5 mb-3">My Join Requests</h2>
-        {myRequests.length === 0 ? (
+
+      {activeTab === 'sent' && (
+        <>
+          <h2 className="mt-5 mb-3">My Join Requests</h2>
+
+          {myRequests.length === 0 ? (
             <p>No join requests sent.</p>
-             ) : (
+          ) : (
             myRequests.map((request) => (
-            <div key={request._id} className="card mb-3 shadow-sm">
-            <div className="card-body">
-                <h5 className="mb-2">
-                {request.project?.title || "Project no longer available"}
-                </h5>
+              <div key={request._id} className="card mb-3 shadow-sm">
+                <div className="card-body">
 
-                <p className="mb-1">
-                <strong>Role:</strong> {request.role}
-                </p>
+                  <h5 className="mb-2">
+                    {request.project?.title || "Project no longer available"}
+                  </h5>
 
-                {request.message && (
-                <p className="mb-0">
-                    <strong>Message:</strong> {request.message}
-                </p>
-                )}
-                
-                {request.project && <button type="button" className="btn btn-outline-danger mt-3" onClick={() => handleCancel(request)}>Cancel Request</button>}
-                
-            </div>
-            </div>
-        ))
-        )}
+                  <p className="mb-1">
+                    <strong>Role:</strong> {request.role}
+                  </p>
+
+                  {request.message && (
+                    <p className="mb-0">
+                      <strong>Message:</strong> {request.message}
+                    </p>
+                  )}
+
+                  {request.project && (
+                    <button
+                      type="button"
+                      className="btn btn-outline-danger mt-3"
+                      onClick={() => handleCancel(request)}
+                    >
+                      Cancel Request
+                    </button>
+                  )}
+
+                </div>
+              </div>
+            ))
+          )}
+        </>
+      )}
+
     </div>
   );
 };
