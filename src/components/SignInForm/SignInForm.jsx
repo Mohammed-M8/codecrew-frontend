@@ -39,60 +39,63 @@ const SignInForm = () => {
 
 
   return (
-    <main className="container w-100 py-5">
-      <div className="row w-100 justify-content-center">
-        <div className="col-12 w-100 col-md-6 col-lg-4">
-          <div className="card w-90 shadow-sm">
-            <div className="card-body p-4">
-              <h1 className="h3 text-center mb-4">Sign In</h1>
+    <div className="d-flex justify-content-center align-items-center mt-5 mb-3">
+      <div className="w-100" style={{
+        maxWidth: '500px'
+        , maxWidth: '500px',
+        marginTop: '30px'
+      }}>
+        <div className="card w-90 shadow-sm">
+          <div className="card-body p-4">
+            <h1 className="h3 text-center mb-4">Sign In</h1>
 
-              {message && (
-                <div className="alert alert-danger py-2" role="alert">
-                  {message}
-                </div>
-              )}
+            {message && (
+              <div className="alert alert-danger py-2" role="alert">
+                {message}
+              </div>
+            )}
 
-              <form autoComplete="off" onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <label htmlFor="username" className="form-label">Username</label>
-                  <input
-                    type="text"
-                    autoComplete="off"
-                    id="username"
-                    className="form-control"
-                    value={formData.username}
-                    name="username"
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
+            <form autoComplete="off" onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <label htmlFor="username" className="form-label">Username</label>
+                <input
+                  type="text"
+                  autoComplete="off"
+                  id="username"
+                  className="form-control"
+                  value={formData.username}
+                  name="username"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-                <div className="mb-4">
-                  <label htmlFor="password" className="form-label">Password</label>
-                  <input
-                    type="password"
-                    autoComplete="off"
-                    id="password"
-                    className="form-control"
-                    value={formData.password}
-                    name="password"
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
+              <div className="mb-4">
+                <label htmlFor="password" className="form-label">Password</label>
+                <input
+                  type="password"
+                  autoComplete="off"
+                  id="password"
+                  className="form-control"
+                  value={formData.password}
+                  name="password"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-                <div className="d-flex gap-2">
-                  <button disabled={isFormInvalid()} type="submit" className="btn btn-primary flex-grow-1">Sign In</button>
-                  <button type="button" className="btn btn-outline-secondary" onClick={() => navigate('/')}>
-                    Cancel
-                  </button>
-                </div>
-              </form>
-            </div>
+              <div className="d-flex gap-2">
+                <button disabled={isFormInvalid()} type="submit" className="btn btn-primary flex-grow-1">Sign In</button>
+                <button type="button" className="btn btn-outline-secondary" onClick={() => navigate('/')}>
+                  Cancel
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
-    </main>
+    </div>
+
   );
 };
 

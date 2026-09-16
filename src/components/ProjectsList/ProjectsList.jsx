@@ -9,7 +9,7 @@ import "./ProjectsList.css";
 export default function ProjectsList({ projects, variant }) {
     const { user } = useContext(UserContext)
     const [selectedProject, setSelectedProject] = useState(null);
-const navigate=useNavigate();
+    const navigate = useNavigate();
 
     const stripColors = useMemo(() => {
         const map = {};
@@ -39,14 +39,19 @@ const navigate=useNavigate();
     const isLoggedIn = !!user
 
     return (
-        <div className="d-flex flex-column gap-3">
+        <div className=" d-flex flex-column gap-3">
             {projects.map((p) => (
-                <div onClick={()=>navigate(`/projects/${p._id}`)} key={p._id} className="card project-card shadow-sm">
-                    <div className="project-strip" style={{ backgroundColor: stripColors[p._id] }} />
-
+                <div onClick={() => navigate(`/projects/${p._id}`)} key={p._id} className="card project-card shadow-sm"
+                    style={{
+                        width: "80%",
+                        margin: "0 auto"
+                    }}>
                     <div className="card-body">
+                        <div className="project-strip" style={{
+                            backgroundColor: stripColors[p._id],
+                        }} />
                         <div className="row align-items-center">
-                            <div className="col-8">
+                            <div className="col">
                                 <h5 className="card-title mb-1">{p.title}</h5>
 
                                 <p className="text-muted mb-1">
@@ -67,20 +72,22 @@ const navigate=useNavigate();
                                 </p>
                             </div>
 
-                            <div className="col-4 d-flex flex-column gap-2">
-                                <Link to={`/projects/${p._id}`} className="btn btn-outline-primary">
-                                    View Project
-                                </Link>
-                                {variant === "search" && isLoggedIn && (
+                            <div className="col-auto d-flex flex-column gap-2">
+                                <div className="project-actions">
+                                    <Link to={`/projects/${p._id}`} className="btn btn-outline-primary .btn">
+                                        View Project
+                                    </Link>
+                                    {variant === "search" && isLoggedIn && (
 
-                                    isAlreadyMember(p)
+                                        isAlreadyMember(p)
 
-                                        ? <p className="text-muted mb-0 text-center">Joined</p>
+                                            ? <p className="text-muted mb-0 text-center">Joined</p>
 
-                                        : <button className="btn btn-primary" onClick={(e) => { e.stopPropagation(); setSelectedProject(p); }}>Join</button>
+                                            : <button className="btn btn-primary" onClick={(e) => { e.stopPropagation(); setSelectedProject(p); }}>Join</button>
 
-                                )}                        
+                                    )}
                                 </div>
+                            </div>
                         </div>
                     </div>
                 </div>

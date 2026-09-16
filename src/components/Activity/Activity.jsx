@@ -12,7 +12,6 @@ function Activity() {
     useEffect(() => {
         const fetchAlltasks = async () => {
             const tasks = await taskService.activity(user._id);
-            console.log("tasks", tasks);
             setTasks(tasks);
         };
         if (user) fetchAlltasks();
