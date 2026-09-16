@@ -96,4 +96,18 @@ const update = async (projectId, formData) => {
     return data;
 };
 
-export { index, userProjects, show, create, deleteProject, update }
+const removeMember = async (projectId, memberId) => {
+    const res = await fetch(`${BASE_URL}/${projectId}/members/${memberId}`, {
+        method: 'DELETE',
+        ...getHeaders()
+    });
+
+    if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.err || 'Something went wrong');
+    }
+
+    return true;
+};
+
+export { index, userProjects, show, create, deleteProject, update,removeMember }

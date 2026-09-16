@@ -1,14 +1,18 @@
-import { useContext, useEffect, useState, useMemo } from "react"
+import { useContext, useEffect, useState, useMemo, Fragment } from "react"
 import * as projectService from '../../services/projectsService';
 import { NavLink, useNavigate, useParams } from "react-router";
 import { UserContext } from "../../contexts/UserContext";
 import DeleteProjectModal from "../DeleteProjectModal/DeleteProjectModal";
+import RemoveMemberModal from "../RemoveMemberModal/RemoveMemberModal";
 import getRandomColor from "../../../helpers/getRandomColor";
 import "./ProjectInfo.css";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 export default function ProjectInfo() {
     const { user } = useContext(UserContext)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const [showRemoveModal, setShowRemoveModal] = useState(false)
+    const [memberToRemove, setMemberToRemove] = useState(null)
     const [project, setProject] = useState(null)
     const params = useParams()
     const projectId = params.projectId
@@ -27,10 +31,10 @@ export default function ProjectInfo() {
         technologies: getRandomColor(),
         members: getRandomColor(),
         roles: getRandomColor(),
-    }), [projectId]);
+    }), []);
 
-const totalRequired = (requiredRoles) =>
-    requiredRoles.reduce((sum, r) => sum + r.quantity, 0) + 1;
+    const totalRequired = (requiredRoles) =>
+        requiredRoles.reduce((sum, r) => sum + r.quantity, 0) + 1;
 
     const percentFilled = (p) => {
         const required = totalRequired(p.requiredRoles);
@@ -47,7 +51,26 @@ const totalRequired = (requiredRoles) =>
         }
     }
 
-    if (!project) return <p className="container py-5">Loading...</p>;
+    const openRemoveModal = (memberId) => {
+        setMemberToRemove(memberId)
+        setShowRemoveModal(true)
+    }
+
+    const handleRemove = async () => {
+        try {
+            await projectService.removeMember(project._id, memberToRemove)
+            setProject((prev) => ({
+                ...prev,
+                members: prev.members.filter((m) => m.user._id !== memberToRemove),
+            }))
+            setShowRemoveModal(false)
+            setMemberToRemove(null)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    if (!project) return <LoadingSpinner/>;
 
     return (
         <main className="container">
@@ -74,6 +97,12 @@ const totalRequired = (requiredRoles) =>
                 show={showDeleteModal}
                 onClose={() => setShowDeleteModal(false)}
                 handleDelete={handleDelete}
+            />
+
+            <RemoveMemberModal
+                show={showRemoveModal}
+                onClose={() => setShowRemoveModal(false)}
+                handleRemove={handleRemove}
             />
 
             <p className="mb-4">{project.description}</p>
@@ -114,10 +143,20 @@ const totalRequired = (requiredRoles) =>
                             {project.members.length > 0 ? (
                                 <ul className="list-group list-group-flush">
                                     {project.members.map((m) => (
-                                        <li key={m._id} className="list-group-item d-flex justify-content-between px-0">
-                                            <span>{m.user?.username}</span>
-                                            <span className="text-muted">{m.role}</span>
-                                        </li>
+                                        <Fragment key={m._id}>
+                                            <li className="list-group-item d-flex justify-content-between align-items-center px-0">
+                                                <span>{m.user?.username}</span>
+                                                <span className="text-muted">{m.role}</span>
+                                                {project.owner?._id === user._id && m.user?._id !== project.owner?._id && (
+                                                    <button
+                                                        className="btn btn-sm btn-danger"
+                                                        onClick={() => openRemoveModal(m.user._id)}
+                                                    >
+                                                        Remove
+                                                    </button>
+                                                )}
+                                            </li>
+                                        </Fragment>
                                     ))}
                                 </ul>
                             ) : (
