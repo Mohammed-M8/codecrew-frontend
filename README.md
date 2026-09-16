@@ -6,25 +6,21 @@ CodeCrew is a web-based platform where like-minded coders can lookup interesting
 ![CodeCrew Logo](./public/images/logo.png)
 
 ## User Stories
-- As a guest and registerd user, I must be able to search for available projects and filter by technologies and sort by alphabetical order
+- As a guest and registered user, I must be able to search for available projects and filter by technologies and sort by alphabetical order
 - As a signed-in user I must be able to create, update, delete, and view projects
 - As a signed-in user I must be able to request to join an available team within a project
-- As a signed-in user I must be able to accept/reject a join request made by another users
+- As a signed-in user I must be able to accept/reject a join request made by another user
 - As a member of the team, I must be able to create, update, delete, and view tasks
 
-**future improvements**:
-- As a member of the team, I must be able to participate in group messages related to each project
-- As a member of the team, I must be able to receieve notifications once I am accepted to a project and prior to three days of a due date of any task
+## Getting Started
+- Deployed App: https://codecrew-frontend-lime.vercel.app/
+- Backend Repository: https://github.com/Mohammed-M8/codecrew-backend
 
 ## Entity-Relationship Diagram
 ![ERD](./public/images/projectManagement.drawio.png)
 
 ## Wireframes
 ![prototyes](./public/images/initialPrototpye.png)
-
-## Getting Started
-
-- Deployed App: https://codecrew-frontend-lime.vercel.app/
 
 ## Express & Postman
 
@@ -68,7 +64,7 @@ Below you can see a chart outlining the RESTful routes required for this applica
 - Bootstrap Icons
 ## Technologies Used
 - Git,Github,Express.js,Node.js,React,Bootstrap,Postman(for testing purposes),MongoDB
-## Next Steps
+## Next Steps 
 - Add group messaging for each project.
 - Add notifications when a user receives a new join request.
 - Add notifications when a user is accepted into a project.
