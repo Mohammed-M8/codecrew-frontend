@@ -42,7 +42,7 @@ const App = () => {
               <Route path='projects/:projectId/' element={<ProjectDetails />}>
                 <Route index element={<ProjectInfo />} />
                 <Route path='tasks' element={<TaskList />} />
-                <Route path='requests' element={<h1>Requests</h1>} />
+                <Route path='requests' element={<JoinRequests />} />
               </Route>
               <Route path='projects/:projectId/edit' element={<EditProjectForm />} />
 
