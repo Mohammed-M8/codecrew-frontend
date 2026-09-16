@@ -23,7 +23,7 @@ import TaskForm from './components/TaskForm/TaskForm';
 import EditProjectForm from './components/EditProjectForm/EditProjectForm';
 import EditTask from './components/EditTask/EditTask';
 import ErrorPage from './components/ErrorPage/ErrorPage';
-import UserProfile from './components/UserProfile/USerProfile';
+import UserProfile from './components/UserProfile/UserProfile';
 
 const App = () => {
   const { user } = useContext(UserContext)
