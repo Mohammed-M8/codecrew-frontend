@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState, useMemo, Fragment } from "react"
 import * as projectService from '../../services/projectsService';
-import { NavLink, useNavigate, useParams } from "react-router";
+import { Link, NavLink, useNavigate, useParams } from "react-router";
 import { UserContext } from "../../contexts/UserContext";
 import DeleteProjectModal from "../DeleteProjectModal/DeleteProjectModal";
 import RemoveMemberModal from "../RemoveMemberModal/RemoveMemberModal";
@@ -70,7 +70,7 @@ export default function ProjectInfo() {
         }
     }
 
-    if (!project) return <LoadingSpinner/>;
+    if (!project) return <LoadingSpinner />;
 
     const isOwner = user ? project.owner?._id === user._id : false;
 
@@ -88,7 +88,7 @@ export default function ProjectInfo() {
                         )}
                     </div>
                     <p className="text-muted mb-0">
-                        Owned by {project.owner?.username}
+                        Owned by <Link to={`/users/${project.owner?._id}`}>{project.owner?.username}</Link>
                     </p>
                 </div>
                 <span className={`badge ${project.status === 'open' ? 'text-bg-success' : 'text-bg-secondary'}`}>
@@ -147,7 +147,7 @@ export default function ProjectInfo() {
                                     {project.members.map((m) => (
                                         <Fragment key={m._id}>
                                             <li className="list-group-item d-flex justify-content-between align-items-center px-0">
-                                                <span>{m.user?.username}</span>
+                                                <Link to={`/users/${m.user?._id}`}>{m.user?.username}</Link>
                                                 <span className="text-muted">{m.role}</span>
                                                 {isOwner && m.user?._id !== project.owner?._id && (
                                                     <button

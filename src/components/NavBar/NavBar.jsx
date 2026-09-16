@@ -39,6 +39,9 @@ const NavBar = () => {
                   >Hello, {user.username}</span>
                 </li>
                 <li className="nav-item">
+                    <Link className='nav-link' to={`/users/${user._id}`}>Profile</Link>
+                </li>
+                <li className="nav-item">
                   <Link className="nav-link" to="/" onClick={handleSignOut}>Sign Out</Link>
                 </li>
               </>
