@@ -23,6 +23,7 @@ import TaskForm from './components/TaskForm/TaskForm';
 import EditProjectForm from './components/EditProjectForm/EditProjectForm';
 import EditTask from './components/EditTask/EditTask';
 import ErrorPage from './components/ErrorPage/ErrorPage';
+import UserProfile from './components/UserProfile/USerProfile';
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -35,7 +36,7 @@ const App = () => {
         {user ?
           <>
             <Route path='/' element={<Dashboard />}>
-              <Route index element={<Navigate to='/projects'/>} />
+              <Route index element={<Navigate to='/projects' />} />
               <Route path='projects' element={<MyProjects />} />
               <Route path='projects/search' element={<ProjectsSearch />} />
               <Route path='projects/new' element={<CreateProjectForm />} />
@@ -51,7 +52,7 @@ const App = () => {
               <Route path='projects/:projectId/tasks/:taskId/edit' element={<EditTask />}></Route>
 
               <Route path='projects/:projectId/tasks/:taskId' element={<TaskDetail />}></Route>
-
+              <Route path='users/:userId' element={<UserProfile />}></Route>
               <Route path='requests' element={<JoinRequests />} />
 
               <Route path='tasks' element={<Activity />} />
