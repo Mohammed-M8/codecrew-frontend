@@ -1,0 +1,7 @@
+.nav-pills {
+    --bs-nav-pills-link-active-bg: #3a3c3d;
+}
+.nav-link{
+    color: white;
+    text-decoration: none;
+}

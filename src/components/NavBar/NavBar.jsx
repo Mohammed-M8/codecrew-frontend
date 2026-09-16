@@ -37,17 +37,11 @@ const NavBar = () => {
                   <span className="nav-link disabled">Hello, {user.username}</span>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/">Dashboard</Link>
-                </li>
-                <li className="nav-item">
                   <Link className="nav-link" to="/" onClick={handleSignOut}>Sign Out</Link>
                 </li>
               </>
             ) : (
               <>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/">Home</Link>
-                </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/sign-up">Sign Up</Link>
                 </li>
