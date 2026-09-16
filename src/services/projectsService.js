@@ -2,38 +2,45 @@ import { getHeaders } from "../../helpers/getHeaders";
 
 const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/projects`;
 
-const index = async (search) => {
-
+const index = async (search, page = 1) => {
     try {
-
-        let url = BASE_URL
+        let url = `${BASE_URL}?page=${page}`;
 
         if (search) {
-
-            url = url + `?search=${search}`
-
+            url += `&search=${search}`;
         }
 
-        const data = await fetch(`${url}`).then(res => res.json())
+        const res = await fetch(url);
 
-        return data;
+        if (!res.ok) {
+            const data = await res.json().catch(() => ({}));
+            const error = new Error(data.err || 'Something went wrong');
+            error.status = res.status;
+            throw error;
+        }
 
+        return res.json();
     } catch (error) {
-
-        console.log(error)
-
+        console.log(error);
     }
+};
 
-}
-
-const userProjects = async () => {
+const userProjects = async (page = 1) => {
     try {
-        const data = await fetch(`${BASE_URL}/me`, getHeaders()).then(res => res.json())
-        return data;
+        const res = await fetch(`${BASE_URL}/me?page=${page}`, getHeaders());
+
+        if (!res.ok) {
+            const data = await res.json().catch(() => ({}));
+            const error = new Error(data.err || 'Something went wrong');
+            error.status = res.status;
+            throw error;
+        }
+
+        return res.json();
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
-}
+};
 
 const show = async (projectId) => {
     const res = await fetch(`${BASE_URL}/${projectId}`);
