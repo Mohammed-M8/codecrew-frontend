@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router";
 import * as projectService from '../../services/projectsService';
 import taskService from "../../services/taskService";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 
 const initialState = { title: '', description: '', assignedTo: [], dueDate: '' }
@@ -31,6 +32,7 @@ function EditTask() {
         getTask();
     }, [taskId]);
 
+    if (!formData || !project) return <LoadingSpinner />
 
     const handleUpdateTask = async (taskData) => {
         await taskService.updateTask(projectId, taskId, taskData);

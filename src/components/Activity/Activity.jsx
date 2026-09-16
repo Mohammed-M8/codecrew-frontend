@@ -2,10 +2,11 @@ import { useContext, useEffect, useState } from "react";
 import taskService from '../../services/taskService';
 import { UserContext } from "../../contexts/UserContext";
 import TaskCard from "../TaskCard/TaskCard";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 function Activity() {
     const { user } = useContext(UserContext);
-    const [tasks, setTasks] = useState([]);
+    const [tasks, setTasks] = useState(null);
 
 
     useEffect(() => {
@@ -30,7 +31,17 @@ function Activity() {
         catch (err) { console.log(err.message) }
     }
 
-    if (!tasks) return (<main>Loading...</main>)
+    const handleTaskDelelte = async (projectId, taskId) => {
+        try {
+            await taskService.deleteTask(projectId, taskId);
+            setTasks(tasks.filter((task) => task._id !== taskId))
+        }
+        catch (err) { console.log(err.message) }
+    }
+
+
+
+    if (!tasks) return <LoadingSpinner />
 
     return (<>
         <div className="cards-container" style={{
@@ -40,7 +51,9 @@ function Activity() {
             {
                 tasks.map((task) => {
                     return <TaskCard task={task} key={task._id}
-                        handleStatusChange={handleStatusChange} />
+                        handleStatusChange={handleStatusChange}
+                        handleTaskDelelte={handleTaskDelelte}
+                    />
                 })
             }</div></>)
 }

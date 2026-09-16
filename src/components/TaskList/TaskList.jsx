@@ -3,10 +3,11 @@ import taskService from '../../services/taskService';
 import { UserContext } from "../../contexts/UserContext";
 import TaskCard from "../TaskCard/TaskCard";
 import { useParams } from "react-router";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 function TaskList() {
     const { user } = useContext(UserContext);
-    const [tasks, setTasks] = useState([]);
+    const [tasks, setTasks] = useState(null);
     const { projectId, taskId } = useParams();
     const [filter, setFilter] = useState('all');
 
@@ -26,8 +27,16 @@ function TaskList() {
         }
         catch (err) { console.log(err.message) }
     }
+    const handleTaskDelelte = async (projectId, taskId) => {
+        try {
+            await taskService.deleteTask(projectId, taskId);
+            setTasks(tasks.filter((task) => task._id !== taskId))
+        }
+        catch (err) { console.log(err.message) }
+    }
 
-    if (!tasks) return (<main>Loading...</main>)
+
+    if (!tasks) return <LoadingSpinner />
 
     const filteredTasks = tasks.filter((task) => {
         if (filter === 'all') return true;
@@ -66,6 +75,7 @@ function TaskList() {
                         task={task}
                         key={task._id}
                         handleStatusChange={handleStatusChange}
+                        handleTaskDelelte={handleTaskDelelte}
                     />
                 ))
             ) : (
