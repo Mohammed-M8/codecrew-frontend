@@ -6,7 +6,12 @@ export default function SideBar() {
 
     const { user } = useContext(UserContext)
     return (
-        <nav className="col-md-3 col-lg-2 bg-body-tertiary border-end vh-100">
+        <nav className="bg-body-tertiary border-end position-fixed start-0"
+            style={{
+                width: '250px',
+                top: '56px',
+                height: 'calc(100vh - 56px)'
+            }}>
             <div className="d-flex flex-column p-3 h-100">
                 <h5>{user.username}'s Dashboard</h5>
                 <ul className="nav nav-pills flex-column mb-auto">
@@ -31,7 +36,7 @@ export default function SideBar() {
                         </NavLink>
                     </li>
                 </ul>
-                <NavLink to="/projects/new" className="btn btn-success">
+                <NavLink to="/projects/new" className="btn btn-success mb-3">
                     + Create Project
                 </NavLink>
             </div>

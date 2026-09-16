@@ -39,7 +39,7 @@ const App = () => {
               <Route path='projects/new' element={<CreateProjectForm />} />
               <Route path='projects/:projectId/' element={<ProjectDetails />}>
                 <Route index element={<ProjectInfo />} />
-                <Route path='tasks' element={<><h1>Tasks</h1><TaskList /></>} />
+                <Route path='tasks' element={<TaskList />} />
                 <Route path='requests' element={<h1>Requests</h1>} />
               </Route>
               <Route path='projects/:projectId/edit' element={<EditProjectForm />} />
@@ -52,7 +52,7 @@ const App = () => {
 
               <Route path='requests' element={<JoinRequests />} />
 
-              <Route path='tasks' element={<><h1>Tasks</h1><Activity /></>} />
+              <Route path='tasks' element={<Activity />} />
             </Route>
           </> :
           <>
