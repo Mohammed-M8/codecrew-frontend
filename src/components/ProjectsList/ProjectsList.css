@@ -1,5 +1,10 @@
 .project-card {
     position: relative;
+    width: 90%;
+    margin-bottom: 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
     transition: transform 0.2s ease;
 }
 
@@ -8,10 +13,33 @@
     cursor: pointer;
 }
 
+.card-body {
+    min-height: 120px;
+    padding: 20px 22px 20px 30px;
+}
+
 .project-strip {
     position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
     width: 9px;
+}
+
+.project-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+
+}
+
+.project-actions button,
+.project-actions .btn,
+.project-actions p {
+    min-width: 130px;
+    height: 42px;
+    white-space: nowrap;
+    text-align: center;
 }

@@ -9,6 +9,11 @@ function TaskCard({ task, handleStatusChange, handleTaskDelelte }) {
     const isMissing = task.status !== 'completed' && new Date(task.dueDate).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)
     const isCreator = task.createdBy === user._id;
 
+    function getStatusColor(status) {
+        if (status === "todo") return "#D65DB1";
+        else if (status === "in-progress") return "#ffc107";
+        else return "#28a745";
+    }
 
     return (
         <div className={`card task-card ${isMissing ? "missed-task" : "shadow-sm"}`}>
@@ -34,15 +39,17 @@ function TaskCard({ task, handleStatusChange, handleTaskDelelte }) {
                             <> <Link
                                 to={`/projects/${task.project._id}/tasks/${task._id}/edit`}
                                 className="btn btn-outline-primary ms-2"
+                                style={{ borderRadius: '50%' }}
                             >
                                 <i className="bi bi-pencil"></i>
-                                <span className="ms-1">Edit</span>
+
                             </Link>
                                 <button
                                     onClick={() => handleTaskDelelte(task.project._id, task._id)}
-                                    className="btn btn-outline-danger ms-2">
+                                    className="btn btn-outline-danger ms-2"
+                                    style={{ borderRadius: '50%' }}
+                                >
                                     <i className="bi bi-trash"></i>
-                                    Delete
                                 </button></>
                             : ''}
                     </div>
@@ -56,16 +63,32 @@ function TaskCard({ task, handleStatusChange, handleTaskDelelte }) {
                     </small>
                 </div>
                 <div className="task-actions">
+
                     <span className="badge"
                         style={{
                             backgroundColor:
                                 task.status === "completed"
-                                    ? "#28a745"
+                                    ? "#F3FBF5"
                                     : task.status === "in-progress"
-                                        ? "#ffc107"
-                                        : "#D65DB1"
+                                        ? "#fefae9"
+                                        : "#FDF5FA",
+                            color: getStatusColor(task.status),
+                            boxShadow:
+                                task.status === "completed"
+                                    ? "0 0 8px rgba(40, 167, 69, 0.6)"
+                                    : task.status === "in-progress"
+                                        ? "0 0 8px rgba(255, 193, 7, 0.6)"
+                                        : "0 0 8px rgba(214, 93, 177, 0.6)"
                         }}
                     >
+                        <span
+                            className="d-inline-block rounded-circle me-1"
+                            style={{
+                                width: "8px",
+                                height: "8px",
+                                backgroundColor: getStatusColor(task.status),
+                            }}
+                        ></span>
                         {task.status}
                     </span>
                     {(task.status !== "completed"
@@ -73,9 +96,11 @@ function TaskCard({ task, handleStatusChange, handleTaskDelelte }) {
                             member._id.toString() === user._id.toString())) &&
                         (<button
                             className={`btn ${task.status === "todo"
-                                ? "btn-primary"
-                                : "btn-success"
-                                }`}
+                                ? "btn-primary w-100"
+                                : "btn-success w-100 "
+                                }`
+                            }
+
                             onClick={() => handleStatusChange(task.project._id, task._id)}
                         >
                             {task.status === "todo"
