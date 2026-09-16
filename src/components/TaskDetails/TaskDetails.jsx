@@ -52,11 +52,11 @@ function TaskDetail() {
     const isCreator = task.createdBy === user._id;
 
     return (
-        <div className="container py-4">
+        <div className="container py-3">
 
             <Link
                 to={-1}
-                className="d-inline-block mb-2 text-decoration-none text-dark"
+                className="d-inline-block mb-3 text-decoration-none text-dark"
                 style={{ fontSize: '20px' }}
             >
                 ← Back

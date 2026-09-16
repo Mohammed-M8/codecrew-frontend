@@ -29,7 +29,7 @@ export default function ProjectDetails() {
                     <Link to='tasks/new' className="btn btn-primary align-self-start">
                         + Create new task
                     </Link> : ''} </div>
-            <ul className="nav nav-tabs mb-4">
+            <ul className="nav nav-tabs mb-3">
                 <li className="nav-item">
                     <NavLink
                         end
