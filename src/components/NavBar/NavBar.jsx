@@ -34,7 +34,9 @@ const NavBar = () => {
             {user ? (
               <>
                 <li className="nav-item">
-                  <span className="nav-link disabled">Hello, {user.username}</span>
+                  <span className="nav-link disabled"
+                    style={{ color: 'white' }}
+                  >Hello, {user.username}</span>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/" onClick={handleSignOut}>Sign Out</Link>
