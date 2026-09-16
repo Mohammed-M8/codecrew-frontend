@@ -22,6 +22,7 @@ import CreateProjectForm from './components/CreateProjectForm/CreateProjectForm'
 import TaskForm from './components/TaskForm/TaskForm';
 import EditProjectForm from './components/EditProjectForm/EditProjectForm';
 import EditTask from './components/EditTask/EditTask';
+import ErrorPage from './components/ErrorPage/ErrorPage';
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -30,6 +31,7 @@ const App = () => {
     <>
       <NavBar />
       <Routes>
+        <Route path='404' element={<ErrorPage />} />
         {user ?
           <>
             <Route path='/' element={<Dashboard />}>
@@ -58,6 +60,9 @@ const App = () => {
           <>
             <Route path='/' element={<Landing />} />
             <Route path='/projects' element={<ProjectsSearch />} />
+            <Route path='projects/:projectId/' element={<ProjectDetails />}>
+              <Route index element={<ProjectInfo />} />
+            </Route>
             <Route path='/sign-up' element={<SignUpForm />} />
             <Route path='/sign-in' element={<SignInForm />} /></>
         }

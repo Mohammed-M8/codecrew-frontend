@@ -36,13 +36,23 @@ const userProjects = async () => {
 }
 
 const show = async (projectId) => {
-    try {
-        const data = await fetch(`${BASE_URL}/${projectId}`).then(res => res.json())
-        return data;
-    } catch (error) {
-        console.log(error)
+    const res = await fetch(`${BASE_URL}/${projectId}`);
+
+    if (res.status === 404) {
+        const error = new Error('Not found');
+        error.status = 404;
+        throw error;
     }
-}
+
+    if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        const error = new Error(data.err || 'Something went wrong');
+        error.status = res.status;
+        throw error;
+    }
+
+    return res.json();
+};
 
 const create = async (formData) => {
     const res = await fetch(`${BASE_URL}/`, {
