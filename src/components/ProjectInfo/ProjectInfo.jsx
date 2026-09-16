@@ -6,6 +6,7 @@ import DeleteProjectModal from "../DeleteProjectModal/DeleteProjectModal";
 import RemoveMemberModal from "../RemoveMemberModal/RemoveMemberModal";
 import getRandomColor from "../../../helpers/getRandomColor";
 import "./ProjectInfo.css";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 export default function ProjectInfo() {
     const { user } = useContext(UserContext)
@@ -69,7 +70,7 @@ export default function ProjectInfo() {
         }
     }
 
-    if (!project) return <p className="container py-5">Loading...</p>;
+    if (!project) return <LoadingSpinner/>;
 
     return (
         <main className="container">
