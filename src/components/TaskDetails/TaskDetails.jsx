@@ -11,7 +11,7 @@ function TaskDetail() {
     const navigate = useNavigate();
 
     function getStatusColor(status) {
-        if (status === "todo") return "#A78BFA";
+        if (status === "todo") return "#D65DB1";
         else if (status === "in-progress") return "#ffc107";
         else return "#28a745";
     }
@@ -87,15 +87,15 @@ function TaskDetail() {
                                     <><Link
                                         to={`/projects/${task.project._id}/tasks/${task._id}/edit`}
                                         className="btn btn-outline-primary ms-2"
+                                        style={{ borderRadius: '50%' }}
                                     >
                                         <i className="bi bi-pencil"></i>
-                                        <span className="ms-1">Edit</span>
                                     </Link>
                                         <button
                                             onClick={() => handleTaskDelelte(projectId, taskId)}
-                                            className="btn btn-outline-danger ms-2">
+                                            className="btn btn-outline-danger ms-2"
+                                            style={{ borderRadius: '50%' }}>
                                             <i className="bi bi-trash"></i>
-                                            Delete
                                         </button></>
                                     : ''}
                             </h2>
@@ -105,16 +105,35 @@ function TaskDetail() {
                         </div>
 
                         <span
-                            className="badge"
+                            className="badge badge-pill"
                             style={{
-                                backgroundColor: getStatusColor(task.status),
+                                backgroundColor:
+                                    task.status === "completed"
+                                        ? "#F3FBF5"
+                                        : task.status === "in-progress"
+                                            ? "#fefae9"
+                                            : "#FDF5FA",
                                 color:
-                                    task.status === "in-progress"
-                                        ? "#000"
-                                        : "#fff",
-                                fontSize: '15px'
+                                    getStatusColor(task.status),
+                                fontSize: '20px',
+                                borderRadius: '30px',
+                                boxShadow:
+                                    task.status === "completed"
+                                        ? "0 0 8px rgba(40, 167, 69, 0.6)"
+                                        : task.status === "in-progress"
+                                            ? "0 0 8px rgba(255, 193, 7, 0.6)"
+                                            : "0 0 8px rgba(214, 93, 177, 0.6)"
                             }}
                         >
+                            <span
+                                className="d-inline-block rounded-circle me-1"
+                                style={{
+                                    width: "12px",
+                                    height: "12px",
+                                    backgroundColor:
+                                        getStatusColor(task.status),
+                                }}
+                            ></span>
                             {task.status}
                         </span>
 
