@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { Link } from 'react-router';
 import { UserContext } from '../../contexts/UserContext';
+import './Navbar.css'
 
 const NavBar = () => {
 
@@ -12,9 +13,9 @@ const NavBar = () => {
   }
 
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary sticky-top">
+    <nav data-bs-theme="dark" className="navbar navbar-expand-lg bg-body-tertiary sticky-top">
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/">Code Crew</Link>
+        <Link className="navbar-brand Logo" to="/">Codecrew</Link>
 
         <button
           className="navbar-toggler"
@@ -36,17 +37,11 @@ const NavBar = () => {
                   <span className="nav-link disabled">Hello, {user.username}</span>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/">Dashboard</Link>
-                </li>
-                <li className="nav-item">
                   <Link className="nav-link" to="/" onClick={handleSignOut}>Sign Out</Link>
                 </li>
               </>
             ) : (
               <>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/">Dashboard</Link>
-                </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/sign-up">Sign Up</Link>
                 </li>

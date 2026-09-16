@@ -1,25 +1,35 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, NavLink, Outlet, useParams } from "react-router";
+import { Link, NavLink, Outlet, useNavigate, useParams } from "react-router";
 import * as projectService from '../../services/projectsService';
 import { UserContext } from "../../contexts/UserContext";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 export default function ProjectDetails() {
     const { projectId } = useParams();
     const { user } = useContext(UserContext)
     const [project, setProject] = useState(null);
+    const navigate = useNavigate()
 
-    useEffect(() => {
-        const getProject = async () => {
+useEffect(() => {
+    const getProject = async () => {
+        try {
             const data = await projectService.show(projectId);
             setProject(data);
-        };
-        getProject();
-    }, [projectId]);
+        } catch (error) {
+            if (error.status === 404) {
+                navigate('/404', { replace: true });
+            } else {
+                console.log(error);
+            }
+        }
+    };
+    getProject();
+}, [projectId, navigate]);
 
-    if (!project) return <main className="container py-5">Loading...</main>;
+    if (!project) return <LoadingSpinner />;
 
-    const isOwner = project.owner?._id === user._id;
-    const isMember = project.members?.some(m => m.user._id === user._id)
+    const isOwner = user ? (project.owner?._id === user._id) : false;
+    const isMember = user ? (project.members?.some(m => m.user._id === user._id)) : false
 
     return (
         <main className="container py-4">

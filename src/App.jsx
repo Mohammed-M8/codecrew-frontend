@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Route, Routes } from 'react-router';
+import { Navigate, Route, Routes } from 'react-router';
 
 // Components
 import NavBar from './components/NavBar/NavBar';
@@ -22,6 +22,7 @@ import CreateProjectForm from './components/CreateProjectForm/CreateProjectForm'
 import TaskForm from './components/TaskForm/TaskForm';
 import EditProjectForm from './components/EditProjectForm/EditProjectForm';
 import EditTask from './components/EditTask/EditTask';
+import ErrorPage from './components/ErrorPage/ErrorPage';
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -30,10 +31,11 @@ const App = () => {
     <>
       <NavBar />
       <Routes>
+        <Route path='404' element={<ErrorPage />} />
         {user ?
           <>
             <Route path='/' element={<Dashboard />}>
-              <Route index element={<MyProjects />} />
+              <Route index element={<Navigate to='/projects'/>} />
               <Route path='projects' element={<MyProjects />} />
               <Route path='projects/search' element={<ProjectsSearch />} />
               <Route path='projects/new' element={<CreateProjectForm />} />
@@ -58,6 +60,9 @@ const App = () => {
           <>
             <Route path='/' element={<Landing />} />
             <Route path='/projects' element={<ProjectsSearch />} />
+            <Route path='projects/:projectId/' element={<ProjectDetails />}>
+              <Route index element={<ProjectInfo />} />
+            </Route>
             <Route path='/sign-up' element={<SignUpForm />} />
             <Route path='/sign-in' element={<SignInForm />} /></>
         }

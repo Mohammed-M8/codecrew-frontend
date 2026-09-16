@@ -72,13 +72,15 @@ export default function ProjectInfo() {
 
     if (!project) return <LoadingSpinner/>;
 
+    const isOwner = user ? project.owner?._id === user._id : false;
+
     return (
         <main className="container">
             <div className="d-flex justify-content-between align-items-start mb-3">
                 <div>
                     <div className="d-flex align-items-center gap-3 mb-1">
                         <h1 className="mb-0">{project.title}</h1>
-                        {project.owner?._id === user._id && (
+                        {isOwner && (
                             <>
                                 <NavLink className="btn btn-secondary" to="edit">Edit</NavLink>
                                 <button className="btn btn-danger" onClick={() => setShowDeleteModal(true)}>Delete</button>
@@ -147,7 +149,7 @@ export default function ProjectInfo() {
                                             <li className="list-group-item d-flex justify-content-between align-items-center px-0">
                                                 <span>{m.user?.username}</span>
                                                 <span className="text-muted">{m.role}</span>
-                                                {project.owner?._id === user._id && m.user?._id !== project.owner?._id && (
+                                                {isOwner && m.user?._id !== project.owner?._id && (
                                                     <button
                                                         className="btn btn-sm btn-danger"
                                                         onClick={() => openRemoveModal(m.user._id)}
