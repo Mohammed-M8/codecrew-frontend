@@ -1,25 +1,32 @@
 import { useEffect, useState } from 'react';
-import {getJoinRequests, getMyJoinRequests, updateJoinRequest, cancelJoinRequest} from '../../services/joinRequestService';
+import { useParams } from 'react-router';
+import {getJoinRequests, getMyJoinRequests,getProjectJoinRequests, updateJoinRequest, cancelJoinRequest} from '../../services/joinRequestService';
 
 const JoinRequests = () => {
   const [requests, setRequests] = useState([]);
   const [myRequests, setMyRequests] = useState([]);
   const [activeTab, setActiveTab] = useState('received');
+  const { projectId } = useParams();
 
   useEffect(() => {
     const fetchJoinRequests = async () => {
-      const ownerRequests = await getJoinRequests();
-      const userRequests = await getMyJoinRequests();
+      if (projectId) {
+        const projectRequests = await getProjectJoinRequests(projectId);
+        setRequests(projectRequests);
+      } else {
+        const ownerRequests = await getJoinRequests();
+        const userRequests = await getMyJoinRequests();
 
-      setRequests(ownerRequests);
-      setMyRequests(userRequests);
+        setRequests(ownerRequests);
+        setMyRequests(userRequests);
+      }
     };
 
     fetchJoinRequests();
-  }, []);
+  }, [projectId]);
 
   const handleUpdate = async (request, action) => {
-    await updateJoinRequest(request.project._id, request._id, action);
+    await updateJoinRequest(projectId || request.project?._id, request._id, action);
 
     setRequests(
       requests.filter((item) => item._id !== request._id)
@@ -39,31 +46,33 @@ const JoinRequests = () => {
 
       <h1 className="mb-4">Requests</h1>
 
-      <div className="d-flex gap-3 mb-4">
-        <button
-          type="button"
-          className={`btn ${
-            activeTab === 'sent'
-              ? 'btn-primary'
-              : 'btn-outline-secondary'
-          }`}
-          onClick={() => setActiveTab('sent')}
-        >
-          Requests I Sent
-        </button>
+      {!projectId && (
+        <div className="d-flex gap-3 mb-4">
+          <button
+            type="button"
+            className={`btn ${
+              activeTab === 'sent'
+                ? 'btn-primary'
+                : 'btn-outline-secondary'
+            }`}
+            onClick={() => setActiveTab('sent')}
+          >
+            Requests I Sent
+          </button>
 
-        <button
-          type="button"
-          className={`btn ${
-            activeTab === 'received'
-              ? 'btn-primary'
-              : 'btn-outline-secondary'
-          }`}
-          onClick={() => setActiveTab('received')}
-        >
-          Join Requests for My Project
-        </button>
-      </div>
+          <button
+            type="button"
+            className={`btn ${
+              activeTab === 'received'
+                ? 'btn-primary'
+                : 'btn-outline-secondary'
+            }`}
+            onClick={() => setActiveTab('received')}
+          >
+            Join Requests for My Project
+          </button>
+        </div>
+      )}
 
       {activeTab === 'received' && (
         <>
@@ -121,7 +130,7 @@ const JoinRequests = () => {
         </>
       )}
 
-      {activeTab === 'sent' && (
+      {!projectId && activeTab === 'sent' && (
         <>
           <h2 className="mt-5 mb-3">My Join Requests</h2>
 
