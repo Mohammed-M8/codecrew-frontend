@@ -7,23 +7,28 @@ const JoinRequests = () => {
   const [myRequests, setMyRequests] = useState([]);
   const [activeTab, setActiveTab] = useState('received');
   const { projectId } = useParams();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchJoinRequests = async () => {
-      if (projectId) {
-        const projectRequests = await getProjectJoinRequests(projectId);
-        setRequests(projectRequests);
-      } else {
-        const ownerRequests = await getJoinRequests();
-        const userRequests = await getMyJoinRequests();
+  const fetchJoinRequests = async () => {
+    setLoading(true);
 
-        setRequests(ownerRequests);
-        setMyRequests(userRequests);
-      }
-    };
+    if (projectId) {
+      const projectRequests = await getProjectJoinRequests(projectId);
+      setRequests(projectRequests);
+    } else {
+      const ownerRequests = await getJoinRequests();
+      const userRequests = await getMyJoinRequests();
 
-    fetchJoinRequests();
-  }, [projectId]);
+      setRequests(ownerRequests);
+      setMyRequests(userRequests);
+    }
+
+    setLoading(false);
+  };
+
+  fetchJoinRequests();
+}, [projectId]);
 
   const handleUpdate = async (request, action) => {
     await updateJoinRequest(projectId || request.project?._id, request._id, action);
@@ -41,10 +46,23 @@ const JoinRequests = () => {
     );
   };
 
+    if (loading) {
+    return (
+        <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ minHeight: "60vh" }}
+        >
+        <div className="spinner-border spinner-border-lg text-primary" role="status">
+        </div>
+        </div>
+    );
+    }
+
+
   return (
     <div className="container py-4">
 
-      <h1 className="mb-4">Requests</h1>
+      {!projectId && <h1 className="mb-4">Requests</h1>}
 
       {!projectId && (
         <div className="d-flex gap-3 mb-4">
@@ -76,7 +94,7 @@ const JoinRequests = () => {
 
       {activeTab === 'received' && (
         <>
-          <h2 className="mb-3">Join Requests</h2>
+          {!projectId && <h2 className="mb-3">Join Requests</h2>}
 
           {requests.length === 0 ? (
             <p>No join requests.</p>
