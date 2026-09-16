@@ -4,6 +4,12 @@ CodeCrew is a web-based platform where like-minded coders can lookup interesting
 
 ## Screenshot / Logo
 ![CodeCrew Logo](./public/images/logo.png)
+![CodeCrew Logo](./public/images/logo.png)
+![Screenshot 1](./public/images/s1.png)
+![Screenshot 2](./public/images/s2.png)
+![Screenshot 3](./public/images/s3.png)
+![Screenshot 4](./public/images/s4.png)
+![Screenshot 5](./public/images/s5.png)
 
 ## User Stories
 - As a guest and registered user, I must be able to search for available projects and filter by technologies and sort by alphabetical order
