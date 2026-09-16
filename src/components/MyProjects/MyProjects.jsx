@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import * as projectService from '../../services/projectsService';
 import ProjectsList from "../ProjectsList/ProjectsList";
 import { NavLink } from "react-router";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 
 export default function MyProjects() {
@@ -24,7 +25,7 @@ export default function MyProjects() {
                 <NavLink to="/projects/new" className="btn btn-success">
                     + Create Project
                 </NavLink></div>
-            <ProjectsList projects={projects} variant="mine" />
+            {projects.length ? <ProjectsList projects={projects} variant="mine" /> : <LoadingSpinner />}
         </main>
     );
 
