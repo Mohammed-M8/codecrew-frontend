@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import {getJoinRequests, getMyJoinRequests,getProjectJoinRequests, updateJoinRequest, cancelJoinRequest} from '../../services/joinRequestService';
+import '../TaskCard/TaskCard.css';
+import getRandomColor from '../TaskCard/taskColor';
 
 const JoinRequests = () => {
   const [requests, setRequests] = useState([]);
@@ -100,7 +102,11 @@ const JoinRequests = () => {
             <p>No join requests.</p>
           ) : (
             requests.map((request) => (
-              <div className="card mb-3 shadow-sm" key={request._id}>
+              <div
+                className="card task-card mb-3 shadow-sm"
+                key={request._id}
+                style={{ borderLeft: `9px solid ${getRandomColor()}` }}
+              >
                 <div className="card-body d-flex justify-content-between align-items-center">
 
                   <div>
@@ -156,7 +162,11 @@ const JoinRequests = () => {
             <p>No join requests sent.</p>
           ) : (
             myRequests.map((request) => (
-              <div key={request._id} className="card mb-3 shadow-sm">
+              <div
+                key={request._id}
+                className="card task-card mb-3 shadow-sm"
+                style={{ borderLeft: `9px solid ${getRandomColor()}` }}
+              >
                 <div className="card-body">
 
                   <h5 className="mb-2">
