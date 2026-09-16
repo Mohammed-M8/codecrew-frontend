@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Route, Routes } from 'react-router';
+import { Navigate, Route, Routes } from 'react-router';
 
 // Components
 import NavBar from './components/NavBar/NavBar';
@@ -35,7 +35,7 @@ const App = () => {
         {user ?
           <>
             <Route path='/' element={<Dashboard />}>
-              <Route index element={<MyProjects />} />
+              <Route index element={<Navigate to='/projects'/>} />
               <Route path='projects' element={<MyProjects />} />
               <Route path='projects/search' element={<ProjectsSearch />} />
               <Route path='projects/new' element={<CreateProjectForm />} />
