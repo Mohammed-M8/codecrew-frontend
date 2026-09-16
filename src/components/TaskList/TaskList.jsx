@@ -14,7 +14,6 @@ function TaskList() {
     useEffect(() => {
         const fetchAlltasks = async () => {
             const tasks = await taskService.index(projectId, taskId);
-            console.log("tasks", tasks);
             setTasks(tasks);
         };
         if (user) fetchAlltasks();
