@@ -43,7 +43,7 @@ export default function ProjectsList({ projects, variant }) {
             {projects.map((p) => (
                 <div onClick={() => navigate(`/projects/${p._id}`)} key={p._id} className="card project-card shadow-sm"
                     style={{
-                        width: "80%",
+                        width: "70%",
                         margin: "0 auto"
                     }}>
                     <div className="card-body">
@@ -57,7 +57,7 @@ export default function ProjectsList({ projects, variant }) {
                                 <p className="text-muted mb-1">
                                     {p.members.length}/{totalRequired(p.requiredRoles)} members
                                 </p>
-                                <div className="progress mb-2" style={{ height: '6px' }} role="progressbar" aria-label="Members filled">
+                                <div className="progress mb-2" style={{ height: '6px', width: '65%' }} role="progressbar" aria-label="Members filled">
                                     <div
                                         className="progress-bar"
                                         style={{ width: `${percentFilled(p)}%` }}
