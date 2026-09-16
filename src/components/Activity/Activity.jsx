@@ -44,17 +44,25 @@ function Activity() {
     if (!tasks) return <LoadingSpinner />
 
     return (<>
+        <h1 className="mb-2 mt-3">Tasks</h1>
+
         <div className="cards-container" style={{
             width: "80%",
             margin: "0 auto"
-        }}>
-            {
-                tasks.map((task) => {
-                    return <TaskCard task={task} key={task._id}
-                        handleStatusChange={handleStatusChange}
-                        handleTaskDelelte={handleTaskDelelte}
-                    />
-                })
+        }}>            {
+                tasks.length > 0 ?
+                    (tasks.map((task) => {
+                        return <TaskCard task={task} key={task._id}
+                            handleStatusChange={handleStatusChange}
+                            handleTaskDelelte={handleTaskDelelte}
+                        />
+                    }))
+                    : (<div className="alert alert-light text-center py-4" role="alert">
+                        <h5 className="mb-2">No tasks found</h5>
+                        <p className="text-muted mb-0">
+                            You don't have any tasks at the moment.
+                        </p>
+                    </div>)
             }</div></>)
 }
 export default Activity;

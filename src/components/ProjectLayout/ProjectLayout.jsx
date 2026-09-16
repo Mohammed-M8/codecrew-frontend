@@ -22,11 +22,11 @@ export default function ProjectDetails() {
     const isMember = project.members?.some(m => m.user._id === user._id)
 
     return (
-        <main className="container py-5">
-            <h1 className="mb-4">Project Details</h1>
-            <div className="d-flex justify-content-end">
+        <main className="container py-4">
+            <div className="d-flex justify-content-between mb-4">
+                <h1>Project Details</h1>
                 {isMember ?
-                    <Link to='tasks/new' className="btn btn-primary">
+                    <Link to='tasks/new' className="btn btn-primary align-self-start">
                         + Create new task
                     </Link> : ''} </div>
             <ul className="nav nav-tabs mb-4">

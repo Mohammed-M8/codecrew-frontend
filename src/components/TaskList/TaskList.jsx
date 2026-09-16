@@ -44,7 +44,6 @@ function TaskList() {
     })
 
     return (<>
-
         <div className="d-flex align-items-center gap-2 mb-4">
             <label htmlFor="statusFilter" className="fw-semibold">
                 Filter:

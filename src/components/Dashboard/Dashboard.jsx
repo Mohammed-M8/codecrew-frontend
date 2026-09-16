@@ -7,13 +7,15 @@ const Dashboard = () => {
 
 
   return (
-    <div className="container-fluid">
-      <div className="row">
-        <SideBar />
-        <main className="col-md-9 col-lg-10 p-4" style={{ height: '100vh', overflowY: 'auto' }}>
-          <Outlet />
-        </main>
-      </div>
+    <div className="container-fluid overflow-x-hidden">
+
+      <SideBar />
+      <main className="px-4 pb-2"
+        style={{
+          marginLeft: '250px',
+        }}>
+        <Outlet />
+      </main>
     </div>
   );
 };
