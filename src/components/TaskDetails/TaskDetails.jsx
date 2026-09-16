@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import taskService from "../../services/taskService";
 import { UserContext } from "../../contexts/UserContext";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 function TaskDetail() {
     const { user } = useContext(UserContext);
@@ -44,13 +45,8 @@ function TaskDetail() {
     }
 
 
-    if (!task) return (<div
-        className="d-flex justify-content-center align-items-center"
-        style={{ minHeight: "60vh" }}
-    >
-        <div className="spinner-border spinner-border-lg text-primary" role="status">
-        </div>
-    </div>)
+    if (!task) return <LoadingSpinner />
+
 
     const isMissing = task.status !== 'completed' && new Date(task.dueDate) < new Date()
     const isCreator = task.createdBy === user._id;

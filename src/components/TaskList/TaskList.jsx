@@ -3,6 +3,7 @@ import taskService from '../../services/taskService';
 import { UserContext } from "../../contexts/UserContext";
 import TaskCard from "../TaskCard/TaskCard";
 import { useParams } from "react-router";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 function TaskList() {
     const { user } = useContext(UserContext);
@@ -35,13 +36,7 @@ function TaskList() {
     }
 
 
-    if (!tasks) return (<div
-        className="d-flex justify-content-center align-items-center"
-        style={{ minHeight: "60vh" }}
-    >
-        <div className="spinner-border spinner-border-lg text-primary" role="status">
-        </div>
-    </div>)
+    if (!tasks) return <LoadingSpinner />
 
     const filteredTasks = tasks.filter((task) => {
         if (filter === 'all') return true;

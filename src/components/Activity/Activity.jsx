@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import taskService from '../../services/taskService';
 import { UserContext } from "../../contexts/UserContext";
 import TaskCard from "../TaskCard/TaskCard";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 function Activity() {
     const { user } = useContext(UserContext);
@@ -40,17 +41,8 @@ function Activity() {
 
 
 
-    if (!tasks) {
-        return (
-            <div
-                className="d-flex justify-content-center align-items-center"
-                style={{ minHeight: "60vh" }}
-            >
-                <div className="spinner-border spinner-border-lg text-primary" role="status">
-                </div>
-            </div>
-        );
-    }
+    if (!tasks) return <LoadingSpinner />
+
     return (<>
         <div className="cards-container" style={{
             width: "80%",
